@@ -1,0 +1,44 @@
+--- TABLES
+
+user
+---
+pk      int     id
+        str     name
+
+
+location
+---
+pk      int     id
+        str     name
+        str     address
+
+-----
+item
+-----
+pk      int     id
+        str     name
+
+------
+event - Arbitrary event where sales can be made
+------
+pk      int             id
+        str             name
+        starts          datetime
+        created_at      datetime
+
+----------
+event_item - stock for items available at an event
+----------
+pk      int         id
+x       int         event_id
+x       int         item_id
+        int         quantity
+
+---------
+item_sale - Records which can be used to track stock changes and sales from each event
+---------
+pk      int             id
+x       int             item_id
+x       int             event_id
+        float           price
+        int             quantity

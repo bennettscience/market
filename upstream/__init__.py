@@ -1,7 +1,7 @@
 from flask import Flask
 
 from upstream.extensions import db, htmx, marshmallow, migrate
-from upstream.blueprints import event, item, user
+from upstream.blueprints import event, home, item, user
 
 
 def create_app():
@@ -14,6 +14,7 @@ def create_app():
     marshmallow.init_app(app)
 
     app.register_blueprint(event.bp)
+    app.register_blueprint(home.bp)
     app.register_blueprint(item.bp)
     app.register_blueprint(user.bp)
 

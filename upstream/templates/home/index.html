@@ -1,0 +1,18 @@
+{% extends '_layout.html' %}
+{% block main_content %}
+<h1>Upstream Market</h1>
+{% for event in events %}
+<div class="event box">
+
+    <strong class="block titlebar">{{event.name}}</strong>
+    <p>Event Inventory: {{event.inventory|length}}</p>
+    <p>Starts: {{event.starts}}</p>
+
+    <section class="tool-bar">
+        <button type="button">Manage</button>
+        <button type="button">Delete</button>
+    </section>
+
+</div>
+{% endfor %}
+{% endblock %}

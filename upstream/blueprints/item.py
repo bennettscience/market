@@ -1,12 +1,14 @@
 from typing import List
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
+from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
 
 from upstream.extensions import db, htmx
-from upstream.models import Item
+from upstream.models import Event, Item
 from upstream.schemas import ItemSchema
+
 
 bp = Blueprint("items", __name__)
 
@@ -17,6 +19,13 @@ def get_items() -> List[Item]:
     return jsonify(ItemSchema(many=True).dump(items))
 
 
+@bp.get("/items/create")
+def create_item_form():
+    return make_response(
+        render_template("forms/create-item.html"), push_url="/items/create"
+    )
+
+
 @bp.post("/items")
 def post_item() -> List[Item]:
     args = parser.parse(ItemSchema(), location="form")
@@ -24,7 +33,11 @@ def post_item() -> List[Item]:
     db.session.add(item)
     db.session.commit()
 
-    return jsonify(ItemSchema(many=True).dump(Item.query.all()))
+    return make_response(
+        render_template("/home/index.html", events=Event.query.all()),
+        push_url="/",
+        trigger={"showToast": "Added item sucecssfully."},
+    )
 
 
 @bp.get("/items/<int:id>")

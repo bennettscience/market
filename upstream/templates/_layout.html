@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}Upstream Market{%endblock%}</title>
+        <link rel="stylesheet" href="https://the.missing.style">
+        <link
+            rel="stylesheet"
+            href="{{url_for('static', filename='css/main.css')}}"
+        />
+        {% block additional_css %} {%endblock%}
+    </head>
+    <body>
+    {% include 'shared/partials/nav.html' %}
+        <main>
+            {% block sidebar %} {% endblock %} {% block main_content %} {%endblock %}
+            {% include 'shared/partials/toast.html' %}
+            <div id="result"></div>
+        </main>
+        <script
+            type="module"
+            src="{{ url_for('static', filename='js/main.js') }}"
+        ></script>
+        <script src="https://unpkg.com/htmx.org@1.8.2"></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {% block additional_js %} {% endblock %}
+    </body>
+</html>

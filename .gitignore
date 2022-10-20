@@ -2,5 +2,5 @@
 .env
 .flaskenv
 __pycache__/
-
+instance/app.db
 config.py

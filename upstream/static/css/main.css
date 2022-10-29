@@ -1,3 +1,37 @@
+.hide--right {
+    right: -35%;
+}
+
+.sidebar--right.htmx-added {
+    right: -35%;
+}
+
+.sidebar {
+    display: block;
+    height: 100%;
+    width: 30%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    
+    box-sizing: border-box;
+    background-color: var(--box-bg);
+    padding: 15px;
+    overflow: auto;
+    z-index: 10;
+}
+
+.sidebar--right__inner {
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+}
+
+.sidebar--right {
+    right: 0;
+    transition: right 350ms ease-in;
+}
+
 #toast {
     position: fixed;
     display: flex;

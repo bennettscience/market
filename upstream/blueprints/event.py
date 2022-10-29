@@ -1,6 +1,7 @@
 from typing import List
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
+from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -13,20 +14,34 @@ bp = Blueprint("events", __name__)
 
 @bp.get("/events")
 def get_events() -> List[Event]:
-    events = Event.query.all()
+    events = Event.query.order_by(Event.starts.desc()).all()
     return jsonify(EventSchema(many=True).dump(events))
+
+
+@bp.get("/events/create")
+def get_event_form():
+    return make_response(
+        render_template(
+            "shared/sidebar.html",
+            partial="forms/create-event.html",
+            push_url="/events/create",
+        )
+    )
 
 
 @bp.post("/events")
 def post_event() -> List[Event]:
-    args = parser.parse(
-        {"name": fields.String(), "starts": fields.DateTime()}, location="form"
-    )
-    event = Event(**args)
-    db.session.add(event)
-    db.session.commit()
+    try:
+        args = parser.parse(
+            {"name": fields.String(), "starts": fields.DateTime()}, location="form"
+        )
+        event = Event(**args)
+        db.session.add(event)
+        db.session.commit()
 
-    return jsonify(EventSchema(many=True).dump(Event.query.all()))
+        return render_template("home/index.html", events=Event.query.all())
+    except Exception as e:
+        return jsonfiy(e)
 
 
 @bp.get("/events/<int:id>")

@@ -22,7 +22,11 @@ def get_items() -> List[Item]:
 @bp.get("/items/create")
 def create_item_form():
     return make_response(
-        render_template("forms/create-item.html"), push_url="/items/create"
+        render_template(
+            "shared/sidebar.html",
+            partial="forms/create-item.html",
+            push_url="/items/create",
+        )
     )
 
 

@@ -23,7 +23,7 @@ def get_items() -> List[Item]:
 def create_item_form():
     return make_response(
         render_template(
-            "shared/sidebar.html",
+            "shared/partials/sidebar.html",
             partial="forms/create-item.html",
             push_url="/items/create",
         )

@@ -22,7 +22,7 @@ def get_events() -> List[Event]:
 def get_event_form():
     return make_response(
         render_template(
-            "shared/sidebar.html",
+            "shared/partials/sidebar.html",
             partial="forms/create-event.html",
             push_url="/events/create",
         )
@@ -39,7 +39,10 @@ def post_event() -> List[Event]:
         db.session.add(event)
         db.session.commit()
 
-        return render_template("home/index.html", events=Event.query.all())
+        return render_template(
+            "home/index-htmx.html",
+            events=Event.query.order_by(Event.starts.desc()).all(),
+        )
     except Exception as e:
         return jsonfiy(e)
 

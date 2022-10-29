@@ -1,0 +1,25 @@
+
+<!-- 
+    The sidebar wrapper expects:
+     - A partial element to render in the container
+     - An event object
+     - Additional data
+     - Any necessary icons for the display
+    If the keys are missing, they will be ignored in the final render.
+-->
+<section
+    _="on closeSidebar
+        add .hide--right to me
+        then wait 1s
+        then remove me
+        end
+        "
+    class="sidebar sidebar--right {{'hide' if hide}}"
+>
+    <div class="sidebar--right__inner">
+        <button class="btn--close" _="on click trigger closeSidebar">
+            × close
+        </button>
+        {{ render_partial(partial, data=data) }}
+    </div>
+</section>

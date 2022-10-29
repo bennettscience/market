@@ -1,0 +1,15 @@
+<form
+    class="table rows"
+    hx-trigger="submit"
+    hx-post="/events"
+    hx-target="main"
+    hx-swap="innerHTML"
+>
+    <label>Item name
+        <input type="text" name="name" />
+    </label>
+    <label>Date and time
+        <input type="datetime-local" name="starts">
+    </label>
+    <button type="submit">Submit</button>
+</form>

@@ -85,11 +85,9 @@ button:disabled {
 }
 
 .btn {
-    display: flex;
     font-weight: 700;
     font-size: 1rem;
     border-radius: 5px;
-    width: 50%;
     height: 36px;
     margin: 0 auto;
     cursor: pointer;
@@ -117,6 +115,10 @@ button:disabled {
     background-color: var(--accent-blue);
     border-color: var(--accent-blue);
     color: var(--text-white)
+}
+
+.btn--wide {
+    padding: 0 1.5rem;
 }
 
 .btn--cancel {
@@ -182,10 +184,16 @@ a[role='button']:hover {
     background-color: var(--accent-green);
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+}
+
 nav {
     display: block;
     height: 100%;
-    width: 150;
+    width: 150px;
     background-color: var(--site-dark);
     margin: 0;
     padding: 0;
@@ -269,6 +277,12 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     opacity: 0;
 }
 
+header .actions {
+    display: flex;
+    width: auto;
+    padding: 0 1.6rem;
+    gap: 2rem;
+}
 
 .nav__item {
     display: flex;

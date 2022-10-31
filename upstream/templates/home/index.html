@@ -1,18 +1,51 @@
 {% extends '_layout.html' %}
 {% block main_content %}
 <h1>Upstream Market</h1>
+<div class="actions">
+    <button
+        class="btn btn--primary"
+        type="button"
+        hx-get="/events/create"
+        hx-target="main"
+        hx-swap="beforeend"
+    >Add Event</button>
+    <button
+        class="btn"
+        type="button"
+        hx-get="/items/create"
+        hx-target="main"
+        hx-swap="beforeend"
+    >Add Item</button>
+</div>
+<table>
+<thead>
+    <th>Event name</th>
+    <th>Starts</th>
+    <th>Inventory</th>
+    <th>Actions</th>
+</thead>
+<tbody>
 {% for event in events %}
-<div class="event box">
-
-    <strong class="block titlebar">{{event.name}}</strong>
-    <p>Event Inventory: {{event.inventory|length}}</p>
-    <p>Starts: {{event.starts}}</p>
-
-    <section class="tool-bar">
-        <button type="button">Manage</button>
-        <button type="button">Delete</button>
-    </section>
+<tr>
+    <td>{{ event.name }}</td>
+    <td>{{ event.starts }}</td>
+    <td>{{ event.inventory|length }}</td>
+    <td>
+        <section class="tool-bar">
+            <button
+                type="button"
+                class="btn"
+            >Manage</button>
+            <button
+                type="button"
+                class="btn"
+            >Delete</button>
+        </section>
+    </td>
 
 </div>
 {% endfor %}
+
+</tbody>
+</table>
 {% endblock %}

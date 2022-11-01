@@ -12,11 +12,11 @@
         {% block additional_css %} {%endblock%}
     </head>
     <body>
-    {% include 'shared/partials/nav.html' %}
+        {% include 'shared/partials/nav.html' %}
         <main>
-            {% block sidebar %} {% endblock %} {% block main_content %} {%endblock %}
-            {% include 'shared/partials/toast.html' %}
+        {% block sidebar %} {% endblock %} {% block main_content %} {%endblock %}
         </main>
+        {% include 'shared/partials/toast.html' %}
         <script
             type="module"
             src="{{ url_for('static', filename='js/main.js') }}"

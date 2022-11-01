@@ -1,7 +1,7 @@
 from typing import List
 
 from flask import Blueprint, jsonify, render_template
-from htmx_flask import make_response
+from htmx_flask import make_response, request
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -16,7 +16,8 @@ bp = Blueprint("items", __name__)
 @bp.get("/items")
 def get_items() -> List[Item]:
     items = Item.query.all()
-    return jsonify(ItemSchema(many=True).dump(items))
+    return render_template("items/items-table.html", items=items)
+    # return jsonify(ItemSchema(many=True).dump(items))
 
 
 @bp.get("/items/create")
@@ -47,7 +48,7 @@ def post_item() -> List[Item]:
 @bp.get("/items/<int:id>")
 def get_single_item(id: int) -> Item:
     item = Item.query.filter(Item.id == id).first_or_404()
-    return jsonify(ItemSchema().dump(item))
+    return render_template("items/item-detail.html", item=item)
 
 
 # @bp.put("/events/<int:id>")

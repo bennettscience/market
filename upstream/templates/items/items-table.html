@@ -1,0 +1,27 @@
+<table>
+<thead>
+    <th>Item name</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+{% for item in items %}
+<tr>
+    <td>{{ item.name }}</td>
+    <td>
+        <section class="tool-bar">
+            <button
+                type="button"
+                class="btn btn--wide"
+                hx-trigger="click"
+                hx-get="/items/{{item.id}}"
+                hx-target="main"
+                hx-swap="innerHTML"
+            >See history</button>
+        </section>
+    </td>
+
+</div>
+{% endfor %}
+
+</tbody>
+</table>

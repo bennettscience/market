@@ -1,0 +1,41 @@
+<h1>{{item.name}}</h1>
+
+<h2>Sale records</h2>
+<table>
+    <thead>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>Price per</th>
+    </thead>
+    <tbody>
+        {% for sale in item.sales %}
+        <tr>
+            <td>
+                {{ sale.event.starts}}
+            </td>
+            <td>{{ sale.quantity }}</td>
+            <td>{{ sale.price_per_item}}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<h2>Events</h2>
+<table>
+    <thead>
+        <th>Date</th>
+        <th>Event Name</th>
+    </thead>
+    <tbody>
+        {% for record in item.event_inventory %}
+        <tr>
+            <td>
+                {{ record.event.starts}}
+            </td>
+            <td>{{ record.event.name }}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>

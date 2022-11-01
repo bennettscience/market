@@ -19,6 +19,7 @@
         >Add Item</button>
     </div>
 </header>
+<section id="main__content-wrap">
 <table>
 <thead>
     <th>Event name</th>
@@ -36,12 +37,12 @@
         <section class="tool-bar">
             <button
                 type="button"
-                class="btn"
+                class="btn btn--wide"
+                hx-trigger="click"
+                hx-get="/events/{{event.id}}"
+                hx-target="main"
+                hx-swap="innerHTML"
             >Manage</button>
-            <button
-                type="button"
-                class="btn"
-            >Delete</button>
         </section>
     </td>
 
@@ -50,4 +51,5 @@
 
 </tbody>
 </table>
+</section>
 {% endblock %}

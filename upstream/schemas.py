@@ -12,8 +12,16 @@ class EventSchema(Schema):
     starts = fields.DateTime()
 
     inventory = fields.Nested(EventItemSchema, many=True)
+    sales = fields.Nested("TransactionSchema", many=True)
 
 
 class ItemSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.String()
+
+
+class TransactionSchema(Schema):
+    id = fields.Int(dump_only=True)
+    item = fields.Nested("ItemSchema")
+    price_per_item = fields.Float()
+    quantity = fields.Int()

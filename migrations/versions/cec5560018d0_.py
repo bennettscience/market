@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 27abd198430f
+Revision ID: cec5560018d0
 Revises:
-Create Date: 2022-10-15 20:55:51.084184
+Create Date: 2022-11-08 20:42:47.800358
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = "27abd198430f"
+revision = "cec5560018d0"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -59,8 +59,10 @@ def upgrade():
     )
     op.create_table(
         "transaction",
-        sa.Column("event_id", sa.Integer(), nullable=False),
-        sa.Column("event_item_id", sa.Integer(), nullable=False),
+        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
+        sa.Column("occurred_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("event_id", sa.Integer(), nullable=True),
+        sa.Column("event_item_id", sa.Integer(), nullable=True),
         sa.Column(
             "price_per_item", mysql.FLOAT(precision=20, scale=10), nullable=False
         ),
@@ -69,7 +71,7 @@ def upgrade():
             ["event_id"], ["event.id"], onupdate="CASCADE", ondelete="CASCADE"
         ),
         sa.ForeignKeyConstraint(["event_item_id"], ["item.id"], onupdate="CASCADE"),
-        sa.PrimaryKeyConstraint("event_id", "event_item_id"),
+        sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###
 

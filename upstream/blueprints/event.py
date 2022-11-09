@@ -50,7 +50,8 @@ def post_event() -> List[Event]:
 @bp.get("/events/<int:id>")
 def get_single_event(id: int) -> Event:
     event = Event.query.filter(Event.id == id).first_or_404()
-    return jsonify(EventSchema().dump(event))
+
+    return render_template("events/index.html", event=event)
 
 
 @bp.put("/events/<int:id>")

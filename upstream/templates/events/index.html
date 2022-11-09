@@ -1,0 +1,12 @@
+<section class="data"><h1>CHARTS GO HERE</h1></section>
+<section class="sales">
+    {% for sale in event.sales %}
+    <div>{{sale.item.name}}</div>
+    {% endfor %}
+</section>
+<section class="items">
+    {% for record in event.inventory %}
+
+    <div>{{record.item.name}} - {{record.quantity}} available</div>
+    {% endfor %}
+</section>

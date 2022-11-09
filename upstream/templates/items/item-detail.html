@@ -11,7 +11,7 @@
         {% for sale in item.sales %}
         <tr>
             <td>
-                {{ sale.event.starts}}
+                {{ sale.occured_at}}
             </td>
             <td>{{ sale.quantity }}</td>
             <td>{{ sale.price_per_item}}</td>
@@ -28,7 +28,7 @@
         <th>Event Name</th>
     </thead>
     <tbody>
-        {% for record in item.event_inventory %}
+        {% for record in item.events %}
         <tr>
             <td>
                 {{ record.event.starts}}

@@ -1,4 +1,11 @@
-<section class="data"><h1>CHARTS GO HERE</h1></section>
+<section class="actions">
+    <button
+        class="btn btn--primary"
+        hx-get="/events/{{event.id}}/inventory"
+        hx-target="main"
+        hx-swap="beforeend"
+        >Add Inventory</button>
+</section>
 <section class="sales">
     {% for sale in event.sales %}
     <div>{{sale.item.name}}</div>
@@ -7,6 +14,13 @@
 <section class="items">
     {% for record in event.inventory %}
 
-    <div>{{record.item.name}} - {{record.quantity}} available</div>
+    <div>
+        <p>{{record.item.name}} - {{record.quantity}} available</p>
+        <button class="btn"
+            hx-get="/events/{{event.id}}/inventory/{{record.item.id}}"
+            hx-target="main"
+            hx-swap="beforeend"
+            >Edit</button>
+    </div>
     {% endfor %}
 </section>

@@ -1,0 +1,15 @@
+{% for item in data['items'] %}
+<form
+    hx-trigger="submit"
+    hx-post="/events/{{data['event']}}/inventory"
+    hx-swap="none"
+    _="on htmx:afterRequest remove me"
+>
+    <p>{{item.name}}</p>
+    <input type="hidden" name="item_id" value="{{item.id}}" />
+    <label>Quantity
+        <input type="number" name="quantity" />
+    </label>
+    <button class="btn btn--primary" type="submit">Add to inventory</button>
+</form>
+{% endfor %}

@@ -1,0 +1,10 @@
+<h1>{{data.item.name}}</h1>
+<p>Change quantity</p>
+<form
+    hx-put="/events/{{data.event.id}}/inventory/{{data.item.id}}"
+>
+    <label>
+        <input type="number" value="{{data.quantity}}" />
+    </label>
+    <button class="btn btn--primary" type="submit">Update</button>
+</form>

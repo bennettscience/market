@@ -6,7 +6,7 @@ from webargs import fields
 from webargs.flaskparser import parser
 
 from upstream.extensions import db, htmx
-from upstream.models import Event, EventItem
+from upstream.models import Event, EventItem, Item
 from upstream.schemas import EventSchema, ItemSchema
 
 bp = Blueprint("events", __name__)
@@ -69,6 +69,15 @@ def delete_single_event(id: int) -> List[Event]:
     return jsonfiy(EventSchema(many=True).dump(Event.query.all()))
 
 
+@bp.get("/events/<int:event_id>/inventory")
+def get_inventory_form(event_id):
+    items = Item.query.all()
+    data = {"items": items, "event": event_id}
+    return render_template(
+        "shared/partials/sidebar.html", partial="forms/create-inventory.html", data=data
+    )
+
+
 # Event Inventory controls
 @bp.post("/events/<int:id>/inventory")
 def post_event_inventory(id: int) -> Event:
@@ -85,3 +94,31 @@ def post_event_inventory(id: int) -> Event:
     db.session.commit()
 
     return jsonify(EventSchema().dump(event))
+
+
+@bp.get("/events/<int:event_id>/inventory/<int:item_id>")
+def get_inventory_edit_form(event_id, item_id):
+    event_item = EventItem.query.filter(
+        Event.id == event_id, Item.id == item_id
+    ).first()
+
+    return render_template(
+        "shared/partials/sidebar.html",
+        partial="forms/edit-inventory.html",
+        data=event_item,
+    )
+
+
+@bp.put("/events/<int:event_id>/inventory/<int:item_id>")
+def update_event_inventory_item(event_id: int, item_id: int) -> Event:
+    # Update the quantity taken to an event
+    args = parser.parse({"quantity": fields.Int()}, location="form")
+    inventory_item = EventItem.query.filter(
+        Event.id == event_id, Item.id == item_id
+    ).first()
+    inventory_item.quantity = args["quantity"]
+    db.session.commit()
+
+    return make_response(
+        render_template="events/index.html", trigger={"showToast": "Quantity updated."}
+    )

@@ -1,7 +1,15 @@
 {% extends '_layout.html' %}
 {% block main_content %}
 <header>
-    <h1>Upstream Market</h1>
+    <div class="data">
+       <div class="infobox infobox--sales">
+            <span class="large">{{ sales }}</span>
+            <p>total sales</p>
+            </div>
+        <div class="infobox infobox--inventory">
+        <span class="large text--light">{{ inventory }}</span>
+        <p class="text--light">total inventory</p></div>
+    </div>
     <div class="actions">
         <button
             class="btn btn--wide btn--primary"

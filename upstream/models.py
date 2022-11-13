@@ -39,7 +39,7 @@ class Event(db.Model):
         "EventItem", backref="event", uselist=True, lazy="dynamic"
     )
 
-    def gross_sale(self):
+    def gross_sales(self):
         return sum([(sale.price_per_item * sale.quantity) for sale in self.sales])
 
 

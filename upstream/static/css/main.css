@@ -326,6 +326,16 @@ header .actions {
     border-color: var(--accent-active);
 }
 
+#sales {
+    display: flex;
+    justify-content: space-around;
+}
+
+.sales__detail {
+    width: 20%;
+    height: 3rem;
+    padding: 0.6rem;
+}
 
 .sidebar--right.htmx-added {
     right: -35%;

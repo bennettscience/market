@@ -10,6 +10,9 @@ class Item(db.Model):
     sales = db.relationship("Transaction", backref="item", lazy="dynamic")
     events = db.relationship("EventItem", backref="item", lazy="dynamic")
 
+    def gross_sales(self):
+        return sum([(sale.price_per_item * sale.quantity) for sale in self.sales])
+
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,9 +33,14 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime, default=func.now())
 
     sales = db.relationship(
-        "Transaction", backref="sales", lazy="dynamic", uselist=True
+        "Transaction", backref="event", lazy="dynamic", uselist=True
     )
-    inventory = db.relationship("EventItem", backref="event", uselist=True)
+    inventory = db.relationship(
+        "EventItem", backref="event", uselist=True, lazy="dynamic"
+    )
+
+    def gross_sale(self):
+        return sum([(sale.price_per_item * sale.quantity) for sale in self.sales])
 
 
 class EventItem(db.Model):

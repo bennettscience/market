@@ -50,8 +50,11 @@ def post_event() -> List[Event]:
 @bp.get("/events/<int:id>")
 def get_single_event(id: int) -> Event:
     event = Event.query.filter(Event.id == id).first_or_404()
+    sales = event.gross_sale()
 
-    return render_template("events/index.html", event=event)
+    return render_template(
+        "events/index.html", event=EventSchema().dump(event), sales=sales
+    )
 
 
 @bp.put("/events/<int:id>")
@@ -98,9 +101,9 @@ def post_event_inventory(id: int) -> Event:
 
 @bp.get("/events/<int:event_id>/inventory/<int:item_id>")
 def get_inventory_edit_form(event_id, item_id):
-    event_item = EventItem.query.filter(
-        Event.id == event_id, Item.id == item_id
-    ).first()
+    event = Event.query.filter(Event.id == event_id).first()
+
+    event_item = event.inventory.filter(EventItem.item_id == item_id).first()
 
     return render_template(
         "shared/partials/sidebar.html",
@@ -113,9 +116,8 @@ def get_inventory_edit_form(event_id, item_id):
 def update_event_inventory_item(event_id: int, item_id: int) -> Event:
     # Update the quantity taken to an event
     args = parser.parse({"quantity": fields.Int()}, location="form")
-    inventory_item = EventItem.query.filter(
-        Event.id == event_id, Item.id == item_id
-    ).first()
+    event = Event.query.filter(Event.id == event_id)
+    inventory_item = event.inventory.filter(EventItem.item_id == item_id).first()
     inventory_item.quantity = args["quantity"]
     db.session.commit()
 

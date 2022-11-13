@@ -1,7 +1,7 @@
 from flask import Flask
 
 from upstream.extensions import db, htmx, marshmallow, migrate, partials
-from upstream.blueprints import event, home, item, user
+from upstream.blueprints import event, home, item, transaction, user
 
 
 def create_app():
@@ -18,6 +18,7 @@ def create_app():
     app.register_blueprint(event.bp)
     app.register_blueprint(home.bp)
     app.register_blueprint(item.bp)
+    app.register_blueprint(transaction.bp)
     app.register_blueprint(user.bp)
 
     return app

@@ -1,0 +1,23 @@
+<h1>Sales</h1>
+<table>
+    <thead>
+        <th>
+            Date
+        </th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Event</th>
+        <th>Price</th>
+    </thead>
+    <tbody>
+        {% for sale in sales %}
+        <tr>
+            <td>{{sale.occurred_at}}</td>
+            <td>{{sale.item.name}}</td>
+            <td>{{sale.quantity}}</td>
+            <td>{{sale.event.name}}</td>
+            <td>{{sale.price_per_item}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

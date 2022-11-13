@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from htmx_flask import request
 
 from upstream.models import Event
+from upstream.schemas import EventSchema
 
 bp = Blueprint("home", __name__)
 
@@ -13,4 +14,4 @@ def index():
         template = "home/index-htmx.html"
     else:
         template = "home/index.html"
-    return render_template(template, events=events)
+    return render_template(template, events=EventSchema(many=True).dump(events))

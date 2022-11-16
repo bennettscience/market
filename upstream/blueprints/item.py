@@ -15,7 +15,7 @@ bp = Blueprint("items", __name__)
 
 @bp.get("/items")
 def get_items() -> List[Item]:
-    items = Item.query.all()
+    items = Item.query.order_by(Item.name).all()
     return render_template("items/items-table.html", items=items)
     # return jsonify(ItemSchema(many=True).dump(items))
 

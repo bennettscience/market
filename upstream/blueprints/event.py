@@ -2,6 +2,7 @@ from typing import List
 
 from flask import Blueprint, jsonify, render_template
 from htmx_flask import make_response
+from sqlalchemy.sql import select, not_
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -50,7 +51,10 @@ def post_event() -> List[Event]:
 @bp.get("/events/<int:id>")
 def get_single_event(id: int) -> Event:
     event = Event.query.filter(Event.id == id).first_or_404()
-    sales = event.gross_sale()
+    sales = event.gross_sales()
+
+    for item in event.inventory:
+        item.available = item.calculate_available()
 
     return render_template(
         "events/index.html", event=EventSchema().dump(event), sales=sales
@@ -74,8 +78,20 @@ def delete_single_event(id: int) -> List[Event]:
 
 @bp.get("/events/<int:event_id>/inventory")
 def get_inventory_form(event_id):
-    items = Item.query.all()
-    data = {"items": items, "event": event_id}
+    # Filter out any items that are already included in the event.
+    # https://stackoverflow.com/questions/68454651/python-sqlalchemy-how-to-get-all-items-that-are-not-related-to-current-user
+
+    event_inventory_subq = select(EventItem.item_id).filter(
+        EventItem.event_id == event_id
+    )
+    available_items = (
+        db.session.query(Item)
+        .filter(not_(Item.id.in_(event_inventory_subq)))
+        .order_by(Item.name)
+        .all()
+    )
+
+    data = {"items": available_items, "event": event_id}
     return render_template(
         "shared/partials/sidebar.html", partial="forms/create-inventory.html", data=data
     )

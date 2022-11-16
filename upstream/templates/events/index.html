@@ -23,18 +23,18 @@
             {% for record in event.inventory %}
             <tr>
                 <td>{{record.item.name}}</td>
-                <td>{{record.quantity}} available</td>
+                <td>{{record.available}} available</td>
                 <td>
                     <button
                         class="btn"
                         hx-get="/events/{{event.id}}/inventory/{{record.item.id}}"
                         hx-target="main"
                         hx-swap="beforeend"
-                    >Edit
+                    >Edit Quantity
                     </button>
                     <button
                         class="btn btn--primary"
-                        hx-get="/events/{{event.id}}/inventory"
+                        hx-get="/sales/{{event.id}}?item_id={{record.item.id}}"
                         hx-target="main"
                         hx-swap="beforeend"
                     >Add Transaction

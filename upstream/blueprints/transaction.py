@@ -4,7 +4,7 @@ from webargs import fields
 from webargs.flaskparser import parser
 
 from upstream.extensions import db, htmx
-from upstream.models import Transaction
+from upstream.models import Item, Transaction
 from upstream.schemas import TransactionSchema
 
 
@@ -17,3 +17,39 @@ def get_all_sales():
     return render_template(
         "sales/index.html", sales=TransactionSchema(many=True).dump(sales)
     )
+
+
+@bp.get("/sales/<int:event_id>")
+def get_sale_form(event_id):
+    args = parser.parse({"item_id": fields.Int()}, location="querystring")
+    item = Item.query.filter(Item.id == args["item_id"]).first()
+    data = {"event_id": event_id, "item": item}
+    return render_template(
+        "shared/partials/sidebar.html",
+        partial="sales/partials/sale-form.html",
+        data=data,
+    )
+
+
+@bp.post("/sales/<int:event_id>")
+def make_sale(event_id):
+
+    args = parser.parse(
+        {
+            "event_item_id": fields.Int(),
+            "quantity": fields.Int(),
+            "price_per_item": fields.Float(),
+        },
+        location="form",
+    )
+
+    sale = Transaction(
+        event_id=event_id,
+        event_item_id=args["event_item_id"],
+        price_per_item=args["price_per_item"],
+        quantity=args["quantity"],
+    )
+    db.session.add(sale)
+    db.session.commit()
+
+    return make_response(trigger={"showToast": "Sale added!"})

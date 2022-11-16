@@ -55,6 +55,18 @@ class EventItem(db.Model):
     )
     quantity = db.Column(db.Integer)
 
+    def calculate_available(self):
+        sale_records = self.event.sales.filter(
+            Transaction.event_item_id == self.item.id
+        ).all()
+        sold = [sale.quantity for sale in sale_records]
+        sales = sum(sold)
+
+        if sales <= 0:
+            return 0
+        else:
+            return self.quantity - sales
+
 
 class Transaction(db.Model):
     __tablename__ = "transaction"

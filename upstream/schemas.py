@@ -3,7 +3,8 @@ from marshmallow import Schema, fields
 
 class EventItemSchema(Schema):
     item = fields.Nested("ItemSchema")
-    quantity = fields.String()
+    quantity = fields.Int()
+    available = fields.Int()
 
 
 class EventSchema(Schema):

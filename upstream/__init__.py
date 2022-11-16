@@ -21,4 +21,21 @@ def create_app():
     app.register_blueprint(transaction.bp)
     app.register_blueprint(user.bp)
 
+    @app.cli.command("setup")
+    def setup():
+        from upstream.models import Item
+
+        items = [
+            "Potato",
+            "Broccoli",
+            "Green Pepper",
+            "Garlic",
+            "Pickling Cucumber",
+            "Slicer Cucumber",
+            "Salad",
+        ]
+        data = [Item(name=item) for item in items]
+        db.session.add_all(data)
+        db.session.commit()
+
     return app

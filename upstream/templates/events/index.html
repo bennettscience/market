@@ -1,16 +1,20 @@
-<h1>{{ event.name }}</h1>
-<p>{{event.starts}}</p>
-<section class="actions">
-    <button
-        class="btn btn--primary"
-        hx-get="/events/{{event.id}}/inventory"
-        hx-target="main"
-        hx-swap="beforeend"
-        >Add Inventory</button>
-</section>
-<section id="sales">
-    <div class="sales__detail">{{ sales }}</div>
-    <div class="sales__detail">{{ event.inventory|length }}</div>
+<section class="event__header">
+    <section class="event__meta">
+        <h1>{{ event.name }}</h1>
+        <p>{{event.starts}}</p>
+    </section>
+    <section class="actions">
+        <button
+            class="btn btn--primary"
+            hx-get="/events/{{event.id}}/inventory"
+            hx-target="main"
+            hx-swap="beforeend"
+            >Add Inventory</button>
+    </section>
+    <section class="event event__sales">
+        <div class="event__sales-box"><p class="large">{{ sales }}</p><p>Event sales</p></div>
+        <div class="event__sales-box"><p class="large">{{ event.inventory|length }}</p><p>Event Inventory</p></div>
+    </section>
 </section>
 <section class="items">
     <table>

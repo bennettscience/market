@@ -1,30 +1,3 @@
-<header>
-    <div class="data">
-        <div class="infobox infobox--sales">
-            <span class="large">{{ sales }}</span>
-            <p>total sales</p>
-            </div>
-        <div class="infobox infobox--inventory">
-        <span class="large text--light">{{ inventory }}</span>
-        <p class="text--light">total inventory</p></div>
-    </div>
-    <div class="actions">
-        <button
-            class="btn btn--wide btn--primary"
-            type="button"
-            hx-get="/events/create"
-            hx-target="main"
-            hx-swap="beforeend"
-        >Add Event</button>
-        <button
-            class="btn btn--wide"
-            type="button"
-            hx-get="/items/create"
-            hx-target="main"
-            hx-swap="beforeend"
-        >Add Item</button>
-    </div>
-</header>
 <section id="main__content-wrap">
 <table>
 <thead>

@@ -15,11 +15,4 @@ def index():
     else:
         template = "home/index.html"
 
-    sales = sum([event.gross_sales() for event in events])
-    inventory = len(Item.query.all())
-    return render_template(
-        template,
-        events=EventSchema(many=True).dump(events),
-        sales=sales,
-        inventory=inventory,
-    )
+    return render_template(template, events=EventSchema(many=True).dump(events))

@@ -1,11 +1,13 @@
+from pprint import pprint
+
 from flask import Blueprint, jsonify, render_template
 from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
 
 from upstream.extensions import db, htmx
-from upstream.models import Item, Transaction
-from upstream.schemas import TransactionSchema
+from upstream.models import Event, Item, Transaction
+from upstream.schemas import EventSchema, TransactionSchema
 
 
 bp = Blueprint("transactions", __name__)
@@ -43,6 +45,8 @@ def make_sale(event_id):
         location="form",
     )
 
+    event = Event.query.filter(Event.id == event_id).first()
+
     sale = Transaction(
         event_id=event_id,
         event_item_id=args["event_item_id"],
@@ -52,4 +56,15 @@ def make_sale(event_id):
     db.session.add(sale)
     db.session.commit()
 
-    return make_response(trigger={"showToast": "Sale added!"})
+    sales = event.gross_sales()
+
+    template = render_template(
+        "events/partials/event-table.html", 
+        event=event, 
+        sales=sales
+    )
+
+    return make_response(
+        template,
+        trigger={"showToast": "Sale added!", "saleComplete": True},
+    )

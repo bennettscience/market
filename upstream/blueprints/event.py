@@ -8,7 +8,7 @@ from webargs.flaskparser import parser
 
 from upstream.extensions import db, htmx
 from upstream.models import Event, EventItem, Item
-from upstream.schemas import EventSchema, ItemSchema
+from upstream.schemas import EventSchema, EventItemSchema
 
 bp = Blueprint("events", __name__)
 
@@ -45,7 +45,7 @@ def post_event() -> List[Event]:
             events=Event.query.order_by(Event.starts.desc()).all(),
         )
     except Exception as e:
-        return jsonfiy(e)
+        return jsonify(e)
 
 
 @bp.get("/events/<int:id>")
@@ -53,11 +53,13 @@ def get_single_event(id: int) -> Event:
     event = Event.query.filter(Event.id == id).first_or_404()
     sales = event.gross_sales()
 
-    for item in event.inventory:
-        item.available = item.calculate_available()
+    event_items = event.inventory.all()
+
+    for record in event_items:
+        record.available = record.calculate_available()
 
     return render_template(
-        "events/index.html", event=EventSchema().dump(event), sales=sales
+        "events/index.html", event=event, sales=sales
     )
 
 
@@ -73,7 +75,7 @@ def delete_single_event(id: int) -> List[Event]:
     db.session.delete(event)
     db.session.commit()
 
-    return jsonfiy(EventSchema(many=True).dump(Event.query.all()))
+    return jsonify(EventSchema(many=True).dump(Event.query.all()))
 
 
 @bp.get("/events/<int:event_id>/inventory")

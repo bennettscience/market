@@ -12,7 +12,7 @@ class EventSchema(Schema):
     name = fields.String()
     starts = fields.DateTime()
 
-    inventory = fields.Nested(EventItemSchema, many=True)
+    inventory = fields.Nested("EventItemSchema", many=True)
     sales = fields.Nested("TransactionSchema", many=True)
 
 

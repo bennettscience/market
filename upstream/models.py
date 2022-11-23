@@ -62,7 +62,7 @@ class EventItem(db.Model):
         sold = [sale.quantity for sale in sale_records]
         sales = sum(sold)
 
-        if sales <= 0:
+        if sales >= self.quantity:
             return 0
         else:
             return self.quantity - sales

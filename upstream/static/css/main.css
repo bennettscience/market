@@ -16,12 +16,13 @@
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     --left-shadow: rgba(0, 0, 0, 0.2) -20px 0 25px -5px,
     rgba(0, 0, 0, 0.02) -10px 0 10px -5px;
+    --shadow-left-border: rgba(0, 0, 0, 0.2) 0px 10px 25px -5px,rgba(0, 0, 0, 0.1) -10px 0px 10px -5px;
+    --tiny-shadow: rgba(0, 0, 0, 0.2) 0 0 25px -5px,rgba(0, 0, 0, 0.1) 0 0px 10px -5px;
     /* interaction */
     --accent-hover: #697b70;
     --accent-active: #9cb0a4;
-    --shadow-left-border: rgba(0, 0, 0, 0.2) 0px 10px 25px -5px,
-    rgba(0, 0, 0, 0.1) -10px 0px 10px -5px;
 }
+    
 
 body {
     color: #333;
@@ -66,6 +67,12 @@ em {
 .large {
     font-size: 3rem;
     font-weight:800;
+}
+
+.disabled {
+    pointer-events: none;
+    color: var(--site-gray);
+    text-decoration-line: line-through;
 }
 
 .text--light {
@@ -131,6 +138,12 @@ label {
     background-color: var(--accent-blue);
     border-color: var(--accent-blue);
     color: var(--text-white)
+}
+
+.btn--sale {
+    font-size: 1.8rem;
+    height: auto;
+    width: 100%;
 }
 
 .btn--wide {
@@ -273,8 +286,7 @@ main {
     margin: 1.5rem 3rem;
     padding: 0.6rem 1.2rem;
     box-sizing: border-box;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    background-color: #fefefe;
 }
 
 table {
@@ -444,6 +456,28 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     box-sizing: border-box;
 }
 
+.event-wrap {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas: "stats pos";
+    gap: 1.2rem;
+}
+
+.event-wrap__left {
+    grid-area: stats;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-wrap__right {
+    grid-area: pos;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 1.2rem;
+}
+
 .event__header {
     display: grid;
     box-sizing: border-box;
@@ -467,12 +501,39 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     align-items: center;
     gap: 1.2rem;
     background-color: transparent;
+    margin-bottom: 1.2rem;
 }
 
 .event__sales-box {
     border-radius: 3px;
+    background-color: #fff;
     flex-grow: 1;
     padding: 0.6rem;
-    background-color: var(--text-white);
-    box-shadow: var(--active-shadow);
+    box-shadow: var(--hover-shadow);
+}
+
+.event__item-action {
+    display: block;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    align-self: flex-start;
+    flex-grow: 1;
+    border-radius: 3px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--tiny-shadow);
+}
+
+.event__item-action:hover {
+    cursor: pointer;
+    box-shadow: var(--hover-shadow);
+}
+
+/* FORM STYLES */
+.item-sale input {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.8rem;
+    margin: 0.3rem 0;
+    padding: 0.6rem;
 }

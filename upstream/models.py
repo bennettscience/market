@@ -1,4 +1,5 @@
 from sqlalchemy.dialects.mysql import FLOAT
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql import func
 from upstream.extensions import db
 
@@ -55,7 +56,8 @@ class EventItem(db.Model):
     )
     quantity = db.Column(db.Integer)
 
-    def calculate_available(self):
+    @hybrid_property
+    def available(self):
         sale_records = self.event.sales.filter(
             Transaction.event_item_id == self.item.id
         ).all()

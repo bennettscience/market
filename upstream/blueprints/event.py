@@ -40,9 +40,11 @@ def post_event() -> List[Event]:
         db.session.add(event)
         db.session.commit()
 
+        events = Event.query.order_by(Event.starts.desc()).all()
+
         return render_template(
             "home/index-htmx.html",
-            events=Event.query.order_by(Event.starts.desc()).all(),
+            events=EventSchema(many=True).dump(events),
         )
     except Exception as e:
         return jsonify(e)
@@ -54,9 +56,6 @@ def get_single_event(id: int) -> Event:
     sales = event.gross_sales()
 
     event_items = event.inventory.all()
-
-    for record in event_items:
-        record.available = record.calculate_available()
 
     return render_template(
         "events/index.html", event=event, sales=sales

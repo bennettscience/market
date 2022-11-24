@@ -5,9 +5,16 @@
                 <h1>{{ event.name }}</h1>
                 <p>{{event.starts}}</p>
             </section>
+            <section class="actions">
+                <button
+                    class="btn btn--primary"
+                    hx-get="/events/{{event.id}}/inventory"
+                    hx-target="main"
+                    hx-swap="beforeend"
+                    >Add Inventory</button>
+            </section>
             <section class="event event__sales">
                 <div class="event__sales-box"><p class="large">{{ sales }}</p><p>Event sales</p></div>
-                <div class="event__sales-box"><p class="large">{{ event.inventory.all()|length }}</p><p>Event Inventory</p></div>
             </section>
         </section>
         <section class="items">
@@ -28,17 +35,9 @@
         </section>
     </div>
     <div class="event-wrap__right">
-        <!-- <section class="actions">
-            <button
-                class="btn btn--primary"
-                hx-get="/events/{{event.id}}/inventory"
-                hx-target="main"
-                hx-swap="beforeend"
-                >Add Inventory</button>
-        </section> -->
         {% for record in event.inventory %}
         <div 
-            class="event__item-action {% if record.calculate_available() == 0 %} disabled {% endif %}"
+            class="event__item-action {% if record.available == 0 %} disabled {% endif %}"
             hx-get="/sales/{{event.id}}?item_id={{record.item.id}}"
             hx-target="main"
             hx-swap="beforeend"

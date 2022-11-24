@@ -5,6 +5,7 @@ from htmx_flask import make_response, request
 from webargs import fields
 from webargs.flaskparser import parser
 
+from upstream.charts import ChartService
 from upstream.extensions import db, htmx
 from upstream.models import Event, Item
 from upstream.schemas import ItemSchema
@@ -48,6 +49,13 @@ def post_item() -> List[Item]:
 @bp.get("/items/<int:id>")
 def get_single_item(id: int) -> Item:
     item = Item.query.filter(Item.id == id).first_or_404()
+    
+    chart = ChartService()
+    # For each event:
+        # Get the number of items taken
+        # Get the number of items sold
+        # Pass into an array
+        # https://matplotlib.org/stable/gallery/lines_bars_and_markers/bar_stacked.html
     return render_template("items/item-detail.html", item=item)
 
 

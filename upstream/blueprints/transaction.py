@@ -5,6 +5,7 @@ from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
 
+from upstream.charts import EventChartBuilder, ChartService
 from upstream.extensions import db, htmx
 from upstream.models import Event, Item, Transaction
 from upstream.schemas import EventSchema, TransactionSchema
@@ -58,10 +59,11 @@ def make_sale(event_id):
 
     sales = event.gross_sales()
 
+    data = EventChartBuilder(event).build()
+    chart = ChartService(data).stacked_bar()
+
     template = render_template(
-        "events/partials/event-table.html", 
-        event=event, 
-        sales=sales
+        "events/partials/event-table.html", event=event, sales=sales, chart=chart
     )
 
     return make_response(

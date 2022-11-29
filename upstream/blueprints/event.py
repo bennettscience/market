@@ -6,6 +6,7 @@ from sqlalchemy.sql import select, not_
 from webargs import fields
 from webargs.flaskparser import parser
 
+from upstream.charts import EventChartBuilder, ChartService
 from upstream.extensions import db, htmx
 from upstream.models import Event, EventItem, Item
 from upstream.schemas import EventSchema, EventItemSchema
@@ -55,11 +56,13 @@ def get_single_event(id: int) -> Event:
     event = Event.query.filter(Event.id == id).first_or_404()
     sales = event.gross_sales()
 
-    event_items = event.inventory.all()
+    data_builder = EventChartBuilder(event)
+    data = data_builder.build()
 
-    return render_template(
-        "events/index.html", event=event, sales=sales
-    )
+    service = ChartService(data)
+    chart = service.stacked_bar()
+
+    return render_template("events/index.html", event=event, sales=sales, chart=chart)
 
 
 @bp.put("/events/<int:id>")

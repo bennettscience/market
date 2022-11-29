@@ -22,13 +22,16 @@
     --accent-hover: #697b70;
     --accent-active: #9cb0a4;
 }
+
+* {
+    box-sizing: border-box;
+}
     
 
 body {
     color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     background-color: var(--site-gray);
 }
@@ -98,7 +101,6 @@ button:disabled {
 label {
     display: block;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .btn-container--flex {
@@ -208,7 +210,6 @@ header {
 
 nav {
     display: block;
-    box-sizing: border-box;
     width: 100%;
     background-color: var(--site-dark);
     margin: 0;
@@ -235,7 +236,6 @@ nav {
     color: var(--text-wite);
     border-top: 3px solid;
     border-color: transparent;
-    box-sizing: border-box;
     cursor: pointer;
     padding: 0 0.6rem;
 }
@@ -285,7 +285,6 @@ main {
     display: block;
     margin: 1.5rem 3rem;
     padding: 0.6rem 1.2rem;
-    box-sizing: border-box;
     background-color: #fefefe;
 }
 
@@ -380,7 +379,6 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     position: fixed;
     top: 0;
 
-    box-sizing: border-box;
     padding: 15px;
     overflow: auto;
     z-index: 10;
@@ -395,11 +393,9 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 
 .sidebar--right__inner {
     padding: 0 0.75rem;
-    box-sizing: border-box;
 }
 
 .sidebar--right__inner input[type='text'] {
-    box-sizing: border-box;
     width: 100%;
     line-height: 1.2;
     padding: 0.25rem;
@@ -429,7 +425,6 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     transition: all 350ms;
     z-index: 1000;
     border-radius: 3px;
-    box-sizing: border-box;
     background-color: var(--primary-color);
     color: var(--white);
 }
@@ -442,7 +437,6 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 
 #toast-action {
     background-color: rgba(255, 255, 255, 0.15);
-    box-sizing: border-box;
     display: block;
     padding: 1.25rem;
 }
@@ -453,14 +447,23 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 /**    EVENT PAGES **/
 .event {
     display: flex;
-    box-sizing: border-box;
 }
 
 .event-wrap {
     display: grid;
+    grid-template-rows: auto auto;
     grid-template-columns: 1fr 2fr;
-    grid-template-areas: "stats pos";
+    grid-template-areas: "title chart" "stats pos";
     gap: 1.2rem;
+}
+
+.event__chart {
+    grid-area: chart;
+}
+
+.event__chart svg {
+    width: 100%;
+    height: auto;
 }
 
 .event-wrap__left {
@@ -479,11 +482,9 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 }
 
 .event__header {
-    display: grid;
-    box-sizing: border-box;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas: "title actions" "sales sales";
+    grid-area: title;
+    display: flex;
+    flex-direction: column;
 }
 
 .event__meta {
@@ -514,7 +515,6 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 
 .event__item-action {
     display: block;
-    box-sizing: border-box;
     font-size: 1.6rem;
     align-self: flex-start;
     flex-grow: 1;
@@ -531,7 +531,6 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 
 /* FORM STYLES */
 .item-sale input {
-    box-sizing: border-box;
     width: 100%;
     font-size: 1.8rem;
     margin: 0.3rem 0;

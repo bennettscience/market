@@ -8,19 +8,42 @@ import matplotlib
 matplotlib.use("agg")
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.backends.backend_svg import FigureCanvasSVG
 from matplotlib.figure import Figure
 
 
-class ChartService:
-    def __init__(self, series, labels=None):
-        # Accept a series as list of tuples with the (x, y) defined
-        self.series = series
-        self.labels = labels
+class EventChartBuilder:
+    def __init__(self, event):
+        self.event = event
 
-    def create_pie_figure(self):
+    def build(self):
+        # Build the chart
+        data = {
+            "labels": [],
+            "sold": [],
+            "remains": [],
+        }
+
+        # For each event:
+        for item in self.event.inventory.all():
+            data["labels"].append(item.item.name)
+            items = self.event.inventory.all()
+            # Get the number of each item taken
+            data["sold"].append(item.sold)
+            data["remains"].append(item.available)
+
+        return data
+
+
+class ChartService:
+    def __init__(self, data):
+        # Accept a series as list of tuples with the (x, y) defined
+        self.data = data
+
+    def __create_pie_figure(self):
         fig = Figure(figsize=(4.0, 3.0))
-        labels = self.labels
-        sizes = self.series
+        labels = self.data["labels"]
+        sizes = self.data["series"]
 
         colors = ["#32c192", "#e9164f"]
 
@@ -32,8 +55,40 @@ class ChartService:
 
         return fig
 
+    def __create_stacked_bar_figure(self):
+        fig = Figure()
+        labels = self.data["labels"]
+        sold = self.data["sold"]
+        remains = self.data["remains"]
+        width = 0.5
+
+        fig, ax = plt.subplots()
+
+        ax.bar(labels, sold, width, label="Sold", color="#32c192")
+        ax.bar(labels, remains, width, label="Remaining", bottom=sold, color="#3c637a")
+
+        ax.set_ylabel("Total")
+        ax.set_xlabel("Items")
+        ax.legend()
+        plt.xticks(rotation=45)
+        plt.tick_params(axis="x", labelsize=10)
+        plt.tight_layout()
+
+        return fig
+
+    def stacked_bar(self):
+        fig = self.__create_stacked_bar_figure()
+        output = BytesIO()
+        FigureCanvasSVG(fig).print_svg(output)
+        data = output.getvalue().decode("ascii")
+        # fig.savefig(output, format="svg")
+        # output.seek(0)
+        # data = base64.b64encode(output.getbuffer()).decode("ascii")
+        # FigureCanvas(fig).print_png(output)
+        return data
+
     def pie(self):
-        fig = self.create_pie_figure()
+        fig = self.__create_pie_figure()
         output = BytesIO()
         fig.savefig(output, format="png")
         output.seek(0)

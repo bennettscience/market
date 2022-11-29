@@ -69,6 +69,13 @@ class EventItem(db.Model):
         else:
             return self.quantity - sales
 
+    @hybrid_property
+    def sold(self):
+        sale_records = self.event.sales.filter(
+            Transaction.event_item_id == self.item.id
+        ).all()
+        return sum([sale.quantity for sale in sale_records])
+
 
 class Transaction(db.Model):
     __tablename__ = "transaction"

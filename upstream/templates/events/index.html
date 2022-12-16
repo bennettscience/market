@@ -3,48 +3,49 @@
         <section class="event__meta">
             <h1>{{ event.name }}</h1>
             <p>{{event.starts}}</p>
-        </section>
-        <section class="event event__sales">
-            <div class="event__sales-box"><p class="large">{{ sales }}</p><p>Event sales</p></div>
-        </section>
-        <section class="items">
-            <table>
-                <thead>
-                    <th>Item</th>
-                    <th>Remains</th>
-                </thead>
-                <tbody>
-                    {% for record in event.inventory %}
-                    <tr>
-                        <td>{{record.item.name}}</td>
-                        <td>{{record.available}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </section>
-    <div class="event__chart" id="event-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
-    <div class="event-wrap__left">
-        <section class="actions">
-            <button
-            class="btn btn--primary"
-            hx-get="/events/{{event.id}}/inventory"
-            hx-target="main"
-            hx-swap="beforeend"
-            >Add Inventory</button>
+                <button
+                class="btn btn--primary"
+                hx-get="/events/{{event.id}}/inventory"
+                hx-target="main"
+                hx-swap="beforeend"
+                >Add Inventory</button>
         </section>
         
-    </div>
-    <div class="event-wrap__right">
-        {% for record in event.inventory %}
-        <div 
-        class="event__item-action {% if record.available == 0 %} disabled {% endif %}"
-        hx-get="/sales/{{event.id}}?item_id={{record.item.id}}"
-        hx-target="main"
-        hx-swap="beforeend"
-        ><p>{{record.item.name}}</p></div>
-        {% endfor %}
-    </div>
+        <section class="event event__sales">
+            <div class="number-box--big">
+                <p class="large">{{ "${:,.2f}".format(sales) }}</p><p>Event sales</p>
+            </div>
+        </section>
+    </section>
+    <section class="event__items">
+        <div class="table">
+            <div class="row header">
+                <div class="cell">Item Name</div>
+                <div class="cell">Remaining</div>
+                <div class="cell">Sales</div>
+            </div>
+            {% for record in event.inventory %}
+            <div class="row">
+                <div class="cell" data-title="Item Name">{{ record.item.name }}</div>
+                <div class="cell" data-title="Remaining">{{ record.available }}</div>
+                <div 
+                    class="cell flex-cell" 
+                    data-title="Actions"
+                    hx-trigger="edit"
+                    _="on click
+                         if .editing is not empty
+                           showToast('You\'re already editing a row.')
+                         end
+                         trigger edit"
+                    hx-get="/sales/{{event.id}}?item_id={{record.item.id}}"
+                    hx-swap="outerHTML"
+                    >
+                    {{ record.sold }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="event__chart" id="event-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
 </div>
 

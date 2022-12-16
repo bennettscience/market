@@ -1,14 +1,13 @@
-<h1>{{data.item.name}}</h1>
 <form
-    class="item-sale"
+    class="item-sale editing"
     hx-post="/sales/{{data.event_id}}"
     hx-trigger="submit"
     hx-target=".event__header"
-    hx-swap="innerHTML"
+    hx-swap="outerHTML"
     _="on saleComplete remove me"
 >
 <input type="hidden" name="event_item_id" value="{{data.item.id}}" />
 <input type="number" name="quantity" value="" placeholder="quantity" />
 <input type="number" name="price_per_item" value="" step="any" placeholder="$0.00" />
-<button type="submit" class="btn btn--primary btn--sale">Complete</button>
+<button type="submit" class="btn btn--primary btn--sale">Save</button>
 </form>

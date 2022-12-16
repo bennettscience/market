@@ -88,3 +88,9 @@ class Transaction(db.Model):
     event_item_id = db.Column(db.Integer, db.ForeignKey("item.id", onupdate="CASCADE"))
     price_per_item = db.Column(FLOAT(precision=20, scale=10), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+
+    @classmethod
+    def gross_sales(self):
+        sales = self.query.all()
+        totals = [(sale.quantity * sale.price_per_item) for sale in sales]
+        return sum(totals)

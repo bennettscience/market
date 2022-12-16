@@ -17,8 +17,9 @@ bp = Blueprint("transactions", __name__)
 @bp.get("/sales")
 def get_all_sales():
     sales = Transaction.query.order_by(Transaction.occurred_at).all()
+    gross = Transaction().gross_sales()
     return render_template(
-        "sales/index.html", sales=TransactionSchema(many=True).dump(sales)
+        "sales/index.html", sales=TransactionSchema(many=True).dump(sales), gross=gross
     )
 
 

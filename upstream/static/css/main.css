@@ -136,6 +136,10 @@ label {
     margin: 0;
 }
 
+.btn__round {
+    border-radius: 50%;
+}
+
 .btn--primary {
     background-color: var(--accent-blue);
     border-color: var(--accent-blue);
@@ -190,6 +194,66 @@ label {
 .btn--close:hover {
     cursor: pointer;
     border-color: var(--black);
+}
+
+/* Hold the new button and the actions menu */
+.create-new-button-container {
+    height: auto;
+    width: 100%;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Create new item button */
+#create-new {
+    display: none;
+    width: 64px;
+    height: 64px;
+    box-shadow: var(--box-shadow);
+    /* font-size: 2rem; */
+    text-align: center;
+    margin: 0;
+    z-index:10;
+    transform-origin: center;
+    transform-box: fill-box;
+    transition: all 150ms ease-in-out;
+}
+
+#create-new.active {
+    background-color: var(--accent-red);
+    border-color: transparent;
+    transform: rotate(45deg);
+}
+
+/* popup menu when the new button is clicked */
+.actions--wrapper {
+    color: var(--black);
+    width: auto;
+    opacity: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 0.6rem;
+    transition: all 150ms ease-in-out;
+    position: absolute;
+    right: 0;
+}
+
+.actions--wrapper.show {
+    opacity: 1;
+    right: 70px;
+}
+
+.actions--wrapper button {
+    display: flex;
+    gap: 0.3rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 3px;
+    flex-grow: 1;
+    width: auto;
 }
 
 a[role='button'] {
@@ -276,7 +340,6 @@ nav {
 
 .active {
     background-color: var(--accent-hover);
-    border-top: 3px solid;
     border-color: var(--accent-active);
 }
 
@@ -418,7 +481,7 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     align-items: center;
     opacity: 0;
     top: 90%;
-    right: 1.5rem;
+    left: 1.5rem;
     min-width: 250px;
     margin: 0;
     padding: 0;
@@ -535,4 +598,21 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     font-size: 1.8rem;
     margin: 0.3rem 0;
     padding: 0.6rem;
+}
+
+/* Breakpoints */
+
+@media screen and (max-width: 650px) {
+
+    #create-new {
+        display: flex;
+    }
+
+    .nav--actions { display: none };
+    
+    table {
+        display: block;
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
 }

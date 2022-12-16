@@ -29,8 +29,7 @@ def get_sale_form(event_id):
     item = Item.query.filter(Item.id == args["item_id"]).first()
     data = {"event_id": event_id, "item": item}
     return render_template(
-        "shared/partials/sidebar.html",
-        partial="sales/partials/sale-form.html",
+        "sales/partials/sale-form.html",
         data=data,
     )
 

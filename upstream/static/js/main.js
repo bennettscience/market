@@ -28,3 +28,5 @@ htmx.on('showToast', evt => {
     console.log('got a toast')
     showToast(evt.detail.value)
 })
+
+window.showToast = showToast

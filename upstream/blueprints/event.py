@@ -53,14 +53,18 @@ def post_event() -> List[Event]:
 
 @bp.get("/events/<int:id>")
 def get_single_event(id: int) -> Event:
+
     event = Event.query.filter(Event.id == id).first_or_404()
     sales = event.gross_sales()
 
-    data_builder = EventChartBuilder(event)
-    data = data_builder.build()
+    if event.inventory.all():
+        data_builder = EventChartBuilder(event)
+        data = data_builder.build()
 
-    service = ChartService(data)
-    chart = service.stacked_bar()
+        service = ChartService(data)
+        chart = service.stacked_bar()
+    else:
+        chart = "No data to display."
 
     return render_template("events/index.html", event=event, sales=sales, chart=chart)
 

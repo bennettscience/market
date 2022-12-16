@@ -1,20 +1,75 @@
 <nav>
-    <div class="nav--inner">
-        <div class="nav--nav-items">
-            <span class="nav__item" id="home">
+    <div class="nav--nav-items">
+        <span class="nav__item" id="home">
+            <a
+                hx-get="/"
+                hx-target="main"
+                hx-replace="innerHTML"
+                hx-push-url="true"
+                hx-indicator="#toast"
+                _="
+                on click
+                remove .active from .nav__item
+                add .active to the closest .nav__item
+                end
+            "
+            >
+                <svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    height="16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        xmlns="http://www.w3.org/2000/svg"
+                        d="M11.3356 2.25259C11.7145 1.9158 12.2855 1.9158 12.6644 2.25259L21.6644 10.2526C22.0772 10.6195 22.1143 11.2516 21.7474 11.6644C21.3805 12.0771 20.7484 12.1143 20.3356 11.7474L20 11.4491V19C20 20.1046 19.1046 21 18 21H6.00001C4.89544 21 4.00001 20.1046 4.00001 19V11.4491L3.66437 11.7474C3.25159 12.1143 2.61952 12.0771 2.2526 11.6644C1.88568 11.2516 1.92286 10.6195 2.33565 10.2526L11.3356 2.25259ZM6.00001 9.67129V19H9.00001V14C9.00001 13.4477 9.44773 13 10 13H14C14.5523 13 15 13.4477 15 14V19H18V9.67129L12 4.33795L6.00001 9.67129ZM13 19V15H11V19H13Z"
+                        fill="#F0ECEC"
+                    ></path>
+                </svg>
+                Home
+            </a>
+        </span>
+        <span class="nav__item" id="items">
                 <a
-                    hx-get="/"
+                    hx-get="/items"
                     hx-target="main"
                     hx-replace="innerHTML"
                     hx-push-url="true"
                     hx-indicator="#toast"
                     _="
-                    on click
-                    remove .active from .nav__item
-                    add .active to the closest .nav__item
-                    end
-                "
-                >
+                        on click
+                            remove .active from .nav__item
+                            add .active to the closest .nav__item
+                        end
+                    "
+                    >
+                    <svg fill="none" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                        <path xmlns="http://www.w3.org/2000/svg" d="M9 11.5C9.55228 11.5 10 11.0523 10 10.5C10 9.94772 9.55228 9.5 9 9.5C8.44772 9.5 8 9.94772 8 10.5C8 11.0523 8.44772 11.5 9 11.5Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M11 10.5C11 9.94772 11.4477 9.5 12 9.5H15C15.5523 9.5 16 9.94772 16 10.5C16 11.0523 15.5523 11.5 15 11.5H12C11.4477 11.5 11 11.0523 11 10.5Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M12 12.5C11.4477 12.5 11 12.9477 11 13.5C11 14.0523 11.4477 14.5 12 14.5H15C15.5523 14.5 16 14.0523 16 13.5C16 12.9477 15.5523 12.5 15 12.5H12Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M12 15.5C11.4477 15.5 11 15.9477 11 16.5C11 17.0523 11.4477 17.5 12 17.5H15C15.5523 17.5 16 17.0523 16 16.5C16 15.9477 15.5523 15.5 15 15.5H12Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M10 13.5C10 14.0523 9.55228 14.5 9 14.5C8.44772 14.5 8 14.0523 8 13.5C8 12.9477 8.44772 12.5 9 12.5C9.55228 12.5 10 12.9477 10 13.5Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M9 17.5C9.55228 17.5 10 17.0523 10 16.5C10 15.9477 9.55228 15.5 9 15.5C8.44772 15.5 8 15.9477 8 16.5C8 17.0523 8.44772 17.5 9 17.5Z" fill="#F0ECEC"></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M9 2C8.44772 2 8 2.44772 8 3H6C4.89543 3 4 3.89543 4 5V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V5C20 3.89543 19.1046 3 18 3H16C16 2.44772 15.5523 2 15 2H9ZM16 5H18V20H6V5H8V6C8 6.55228 8.44772 7 9 7H15C15.5523 7 16 6.55228 16 6V5ZM10 5V4H14V5H10Z" fill="#F0ECEC"></path>
+                        </svg>
+                    Inventory
+                </a>
+        </span>
+        <span class="nav__item" id="sales">
+                <a
+                    hx-get="/sales"
+                    hx-target="main"
+                    hx-replace="innerHTML"
+                    hx-push-url="true"
+                    hx-indicator="#toast"
+                    _="
+                        on click
+                            remove .active from .nav__item
+                            add .active to the closest .nav__item
+                        end
+                    "
+                    >
                     <svg
                         fill="none"
                         viewBox="0 0 24 24"
@@ -22,93 +77,10 @@
                         width="16"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path
-                            xmlns="http://www.w3.org/2000/svg"
-                            d="M11.3356 2.25259C11.7145 1.9158 12.2855 1.9158 12.6644 2.25259L21.6644 10.2526C22.0772 10.6195 22.1143 11.2516 21.7474 11.6644C21.3805 12.0771 20.7484 12.1143 20.3356 11.7474L20 11.4491V19C20 20.1046 19.1046 21 18 21H6.00001C4.89544 21 4.00001 20.1046 4.00001 19V11.4491L3.66437 11.7474C3.25159 12.1143 2.61952 12.0771 2.2526 11.6644C1.88568 11.2516 1.92286 10.6195 2.33565 10.2526L11.3356 2.25259ZM6.00001 9.67129V19H9.00001V14C9.00001 13.4477 9.44773 13 10 13H14C14.5523 13 15 13.4477 15 14V19H18V9.67129L12 4.33795L6.00001 9.67129ZM13 19V15H11V19H13Z"
-                            fill="#F0ECEC"
-                        ></path>
+                        <path xmlns="http://www.w3.org/2000/svg" d="M22 6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6ZM20 8H4L4 6L20 6V8ZM4 11H20V18L4 18L4 11Z" fill="#F0ECEC"></path>
                     </svg>
-                    Home
+                    Sales
                 </a>
-            </span>
-            {# {% for item in session['navigation'] %} #}
-            <span class="nav__item" id="items">
-                {# {% if item.element == 'logout' %}
-                    <a href="{{item.href}}">
-                {% else %} #}
-                    <a
-                        hx-get="/items"
-                        hx-target="main"
-                        hx-replace="innerHTML"
-                        hx-push-url="true"
-                        hx-indicator="#toast"
-                        _="
-                            on click
-                                remove .active from .nav__item
-                                add .active to the closest .nav__item
-                            end
-                        "
-                        >
-                        {# {% endif %} #}
-                        <svg
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            height="16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path xmlns="http://www.w3.org/2000/svg" d="M5 6C5 6.02553 5.01022 6.16958 5.29209 6.41948C5.57279 6.66834 6.03602 6.93815 6.69427 7.18499C8.0034 7.67591 9.87903 8 12 8C14.121 8 15.9966 7.67591 17.3057 7.18499C17.964 6.93815 18.4272 6.66834 18.7079 6.41948C18.9898 6.16958 19 6.02553 19 6C19 5.97447 18.9898 5.83042 18.7079 5.58052C18.4272 5.33166 17.964 5.06185 17.3057 4.81501C15.9966 4.32409 14.121 4 12 4C9.87903 4 8.0034 4.32409 6.69427 4.81501C6.03602 5.06185 5.57279 5.33166 5.29209 5.58052C5.01022 5.83042 5 5.97447 5 6ZM3 6C3 5.19711 3.43749 4.55194 3.96527 4.08401C4.49422 3.61504 5.20256 3.2384 5.99202 2.94235C7.57833 2.34749 9.70269 2 12 2C14.2973 2 16.4217 2.34749 18.008 2.94235C18.7974 3.2384 19.5058 3.61504 20.0347 4.08401C20.5625 4.55194 21 5.19711 21 6V10V14V18C21 18.8029 20.5625 19.4481 20.0347 19.916C19.5058 20.385 18.7974 20.7616 18.008 21.0576C16.4217 21.6525 14.2973 22 12 22C9.70269 22 7.57833 21.6525 5.99202 21.0576C5.20256 20.7616 4.49422 20.385 3.96527 19.916C3.43749 19.4481 3 18.8029 3 18V14V10V6ZM5 10C5 10.0255 5.01022 10.1696 5.29209 10.4195C5.57279 10.6683 6.03602 10.9381 6.69427 11.185C8.0034 11.6759 9.87903 12 12 12C14.121 12 15.9966 11.6759 17.3057 11.185C17.964 10.9381 18.4272 10.6683 18.7079 10.4195C18.9898 10.1696 19 10.0255 19 10V8.61619C18.6909 8.77981 18.3574 8.92662 18.008 9.05765C16.4217 9.65251 14.2973 10 12 10C9.70269 10 7.57833 9.65251 5.99202 9.05765C5.64262 8.92662 5.3091 8.77981 5 8.61619V10ZM5 12.6162V14C5 14.0255 5.01022 14.1696 5.29209 14.4195C5.57279 14.6683 6.03602 14.9381 6.69427 15.185C8.0034 15.6759 9.87903 16 12 16C14.121 16 15.9966 15.6759 17.3057 15.185C17.964 14.9381 18.4272 14.6683 18.7079 14.4195C18.9898 14.1696 19 14.0255 19 14V12.6162C18.6909 12.7798 18.3574 12.9266 18.008 13.0576C16.4217 13.6525 14.2973 14 12 14C9.70269 14 7.57833 13.6525 5.99202 13.0576C5.64262 12.9266 5.3091 12.7798 5 12.6162ZM5 16.6162V18C5 18.0255 5.01022 18.1696 5.29209 18.4195C5.57279 18.6683 6.03602 18.9381 6.69427 19.185C8.0034 19.6759 9.87903 20 12 20C14.121 20 15.9966 19.6759 17.3057 19.185C17.964 18.9381 18.4272 18.6683 18.7079 18.4195C18.9898 18.1696 19 18.0255 19 18V16.6162C18.6909 16.7798 18.3574 16.9266 18.008 17.0576C16.4217 17.6525 14.2973 18 12 18C9.70269 18 7.57833 17.6525 5.99202 17.0576C5.64262 16.9266 5.3091 16.7798 5 16.6162Z" fill="#F0ECEC"></path>
-                        </svg>
-                        Inventory
-                    </a>
-            </span>
-            <span class="nav__item" id="items">
-                {# {% if item.element == 'logout' %}
-                    <a href="{{item.href}}">
-                {% else %} #}
-                    <a
-                        hx-get="/sales"
-                        hx-target="main"
-                        hx-replace="innerHTML"
-                        hx-push-url="true"
-                        hx-indicator="#toast"
-                        _="
-                            on click
-                                remove .active from .nav__item
-                                add .active to the closest .nav__item
-                            end
-                        "
-                        >
-                        {# {% endif %} #}
-                        <svg
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            height="16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path xmlns="http://www.w3.org/2000/svg" d="M22 6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6ZM20 8H4L4 6L20 6V8ZM4 11H20V18L4 18L4 11Z" fill="#F0ECEC"></path>
-                        </svg>
-                        Sales
-                    </a>
-            </span>
-        {# {% endfor %} #}
-        </div>
-    <div class="nav--actions">
-        <button
-            class="btn btn--wide btn--primary"
-            type="button"
-            hx-get="/events/create"
-            hx-target="main"
-            hx-swap="beforeend"
-        >Add Event</button>
-        <button
-            class="btn btn--wide"
-            type="button"
-            hx-get="/items/create"
-            hx-target="main"
-            hx-swap="beforeend"
-        >Add Item</button>
-    </div>
+        </span>
     </div>
 </nav>

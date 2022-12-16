@@ -114,8 +114,9 @@ label {
     font-size: 1rem;
     border-radius: 5px;
     height: 36px;
-    margin: 0 auto;
     cursor: pointer;
+    display: flex;
+    gap: 0.6rem;
     align-items: center;
     justify-content: center;
     transition: 0.125s all ease-in-out;
@@ -210,7 +211,7 @@ label {
 
 /* Create new item button */
 #create-new {
-    display: none;
+    display: flex;
     width: 64px;
     height: 64px;
     box-shadow: var(--box-shadow);
@@ -338,84 +339,41 @@ nav {
     font-weight: 700;
 }
 
-.active {
-    background-color: var(--accent-hover);
-    border-color: var(--accent-active);
-}
-
-
 main {
     display: block;
     margin: 1.5rem 3rem;
     padding: 0.6rem 1.2rem;
-    background-color: #fefefe;
+    /* background-color: #fefefe; */
 }
 
-table {
+.table {
     width: 100%;
-    table-layout: fixed;
-    text-align: left;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: table;
 }
 
-table thead th {
-    padding-left: 5px;
+.row {
+    display: table-row;
+    background: #f6f6f6;
 }
 
-table tbody tr {
-    line-height: 1.5;
+.row:nth-of-type(odd) {
+    background: #e9e9e9;
 }
 
-table tbody tr td {
-    padding: 5px;
+.row.header {
+    font-weight: 900;
+    color: #ffffff;
+    background: var(--accent-green);
 }
 
-table tr td label {
-    display: block;
-    position: relative;
+.row.header.red {
+    background: var(--accent-red);
 }
 
-table tr td label svg {
-    display: inline-block;
-    vertical-align: middle;
-    width: 1.5rem;
-}
-
-table tbody tr td label svg:active {
-    border: 2px solid var(--accent-blue);
-}
-
-table tbody tr td label input[type="checkbox"] {
-    opacity: 0.00001;
-    height: 1em;
-    position: absolute;
-}
-
-table tbody tr td label input[type="checkbox"]:hover {
-    cursor: pointer;
-}
-
-table tbody tr td label svg .attended {
-    fill: var(--site-dark);
-}
-
-table tbody tr td label svg .attended__false {
-    opacity: 1;
-}
-
-table tbody tr td label svg .attended__true {
-    opacity: 0;
-}
-
-table tbody tr td label svg .attended {
-    transition: opacity 0.2s linear;
-}
-
-table tbody tr td label input[type="checkbox"]:checked+svg .attended__true {
-    opacity: 1;
-}
-
-table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
-    opacity: 0;
+.cell {
+    padding: 6px 12px;
+    display: table-cell;
 }
 
 #sales {
@@ -505,6 +463,22 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
 }
 #toast-action:hover {
     cursor: pointer;
+}
+
+/* Generic page elements */
+.page__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.number-box--big {
+    padding: 0 3rem;
+    border: 1px solid var(--site-gray);
+    border-radius: 3px;
+    background-color: var(--text-white);
+    box-shadow: var(--box-shadow);
+    box-sizing: border-box;
 }
 
 /**    EVENT PAGES **/
@@ -600,19 +574,97 @@ table tbody tr td label input[type="checkbox"]:checked+svg .attended__false {
     padding: 0.6rem;
 }
 
+.search-wrap {
+    display: block;
+    background-color: var(--site-gray);
+    position: sticky;
+    top: 0;
+}
+
+input[type="search"] {
+    display: block;
+    box-sizing: border-box;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 1.2;
+    border: 1px solid transparent;
+    border-radius: 0;
+    border-bottom: 3px solid var(--site-gray);
+    transition: all 0.25s ease-in-out;
+    margin: 0.6rem 0;
+    padding: 0.6rem;
+    width: 100%;
+}
+
+
 /* Breakpoints */
 
 @media screen and (max-width: 650px) {
 
-    #create-new {
-        display: flex;
+    nav {
+        padding: 0;
     }
 
-    .nav--actions { display: none };
+    .nav--nav-items {
+        justify-content: space-around;
+    }
+
+    main {
+        margin: 1.2rem 0.6rem;
+    }
+
+    .number-box--big {
+        padding: 0 1rem;
+    }
     
-    table {
+    .table {
         display: block;
-        overflow-x: scroll;
-        overflow-y: scroll;
+    }
+
+    .row {
+        padding: 14px 0 7px;
+        display: block;
+    }
+
+    .row.header {
+        padding: 0;
+        height: 6px;
+    }
+
+    .row.header .cell {
+        display: none;
+    }
+    
+    .row .cell {
+        margin-bottom: 10px;
+    }
+    
+    .row .cell:before {
+        margin-bottom: 3px;
+        content: attr(data-title);
+        min-width: 98px;
+        font-size: 10px;
+        line-height: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #969696;
+        display: block;
+    }
+
+    .cell {
+        padding: 2px 16px;
+        display: block;
+    }
+
+    .sidebar {
+        width: 75%;
+    }
+
+    .sidebar--right.htmx-added {
+        right: -75%;
+    }
+
+    .hide--right {
+        right: -75%;       
     }
 }

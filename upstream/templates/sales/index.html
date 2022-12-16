@@ -1,23 +1,43 @@
-<h1>Sales</h1>
-<table>
-    <thead>
-        <th>
-            Date
-        </th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Event</th>
-        <th>Price</th>
-    </thead>
-    <tbody>
-        {% for sale in sales %}
-        <tr>
-            <td>{{sale.occurred_at}}</td>
-            <td>{{sale.item.name}}</td>
-            <td>{{sale.quantity}}</td>
-            <td>{{sale.event.name}}</td>
-            <td>{{sale.price_per_item}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="page__header">
+    <section class="page__meta">
+        <h1>Sales</h1>
+        <i>All sales for Upstream Markets, sorted by date.</i>
+    </section>
+    <section class="sales">
+        <div class="number-box--big"><p class="large">{{ "${:,.2f}".format(gross) }}</p><p>Total sales</p></div>
+    </section>
+</section>
+<div class="search-wrap">
+    <input
+    type="search"
+    placeholder="Search..."
+    _="on keyup
+    if the event's key is 'Escape'
+    set my value to ''
+    trigger keyup
+    else
+    show .row in .table when its textContent contains my value
+    "
+    />
+</div>
+<div class="table">
+    <div class="row header">
+        <div class="cell">Date</div>
+        <div class="cell">Event</div>
+        <div class="cell">Item</div>
+        <div class="cell">Quantity</div>
+        <div class="cell">Unit Price</div>
+        <div class="cell">Total</div>
+    </div>
+    {% for sale in sales %}
+    <div class="row">
+        <div class="cell" data-title="Date">{{ sale.occurred_at }}</div>
+        <div class="cell" data-title="Event">{{ sale.event.name }}</div>
+        <div class="cell" data-title="Item">{{ sale.item.name }}</div>
+        <div class="cell" data-title="Quantity">{{ sale.quantity }}</div>
+        <div class="cell" data-title="Unit Price">{{ "${:,.2f}".format(sale.price_per_item) }}</div>
+        <div class="cell" data-title="Gross Sale">{{ "${:,.2f}".format(sale.price_per_item * sale.quantity) }}</div>
+    </div>
+    {% endfor %}
+</div>
+

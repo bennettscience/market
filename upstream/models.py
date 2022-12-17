@@ -1,8 +1,15 @@
+from flask_login import UserMixin
 from sqlalchemy.dialects.mysql import FLOAT
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql import func
-from upstream.extensions import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from upstream.extensions import db, login_manager
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,9 +28,18 @@ class Location(db.Model):
     address = db.Column(db.String(250))
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+    username = db.Column(db.String(32), unique=True)
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
 
 # One to many

@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
+from flask_login import current_user
 from htmx_flask import request
 
 from upstream.charts import ChartService
@@ -10,13 +11,17 @@ bp = Blueprint("home", __name__)
 
 @bp.get("/")
 def index():
-    events = Event.query.order_by(Event.starts.desc()).all()
-    if request.htmx:
-        template = "home/index-htmx.html"
-    else:
-        template = "home/index.html"
+    if not current_user.is_anonymous and session['_fresh']:
 
-    return render_template(template, events=EventSchema(many=True).dump(events))
+        events = Event.query.order_by(Event.starts.desc()).all()
+        if request.htmx:
+            template = "home/index-htmx.html"
+        else:
+            template = "home/index.html"
+
+        return render_template(template, events=EventSchema(many=True).dump(events))
+    else:
+        return render_template('home/login.html')
 
 
 @bp.get("/stats")

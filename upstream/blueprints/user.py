@@ -30,7 +30,7 @@ def login():
         return render_template('home/login.html')
     else:
         login_user(user)
-        return redirect('/')
+        return render_template('home/index-htmx.html')
 
 @bp.get("/register")
 def register():
@@ -61,7 +61,7 @@ def create_user():
             db.session.commit()
 
             login_user(user)
-            return render_template('home/index.html')
+            return render_template('home/index-htmx.html')
         else:
             return "Your passwords do not match."
 

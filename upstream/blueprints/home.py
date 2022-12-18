@@ -11,8 +11,9 @@ bp = Blueprint("home", __name__)
 
 @bp.get("/")
 def index():
-    if not current_user.is_anonymous and session['_fresh']:
 
+    if not current_user.is_anonymous and session['_fresh']:
+        
         events = Event.query.order_by(Event.starts.desc()).all()
         if request.htmx:
             template = "home/index-htmx.html"

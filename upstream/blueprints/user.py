@@ -1,5 +1,6 @@
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user
+from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -27,10 +28,12 @@ def login():
     user = User.query.filter(User.name == args['name']).first()
 
     if not user:
-        return render_template('home/login.html')
+        return make_response(
+            render_template("home/login-htmx.html"), trigger={"showToast": "Wrong username or password."}
+        )
     else:
         login_user(user)
-        return render_template('home/index-htmx.html')
+        return redirect(url_for('home.index'))
 
 @bp.get("/register")
 def register():

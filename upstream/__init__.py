@@ -1,13 +1,12 @@
 from flask import Flask
 
-from config import Config
 from upstream.extensions import db, htmx, login_manager, marshmallow, migrate, partials
 from upstream.blueprints import event, home, item, transaction, user
 
 
-def create_app():
+def create_app(config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config)
 
     db.init_app(app)
     migrate.init_app(app, db)

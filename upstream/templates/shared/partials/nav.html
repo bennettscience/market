@@ -2,7 +2,7 @@
     <div class="nav--nav-items">
         <span class="nav__item" id="home">
             <a
-                hx-get="{{url_for(home.index)}}"
+                hx-get="{{url_for('home.index')}}"
                 hx-target="main"
                 hx-replace="innerHTML"
                 hx-push-url="true"
@@ -32,7 +32,7 @@
         </span>
         <span class="nav__item" id="items">
                 <a
-                    hx-get="/items"
+                    hx-get="{{url_for('items.get_items')}}"
                     hx-target="main"
                     hx-replace="innerHTML"
                     hx-push-url="true"
@@ -58,7 +58,7 @@
         </span>
         <span class="nav__item" id="sales">
                 <a
-                    hx-get="/sales"
+                    hx-get="{{url_for('transactions.get_all_sales')}}"
                     hx-target="main"
                     hx-replace="innerHTML"
                     hx-push-url="true"

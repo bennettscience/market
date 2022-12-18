@@ -21,7 +21,12 @@ def index():
 
         return render_template(template, events=EventSchema(many=True).dump(events))
     else:
-        return render_template('home/login.html')
+        if request.htmx:
+            template = "home/index-htmx.html"
+        else:
+            template = "home/index.html"
+    
+        return render_template(template)
 
 
 @bp.get("/stats")

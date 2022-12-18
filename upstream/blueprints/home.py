@@ -22,9 +22,9 @@ def index():
         return render_template(template, events=EventSchema(many=True).dump(events))
     else:
         if request.htmx:
-            template = "home/index-htmx.html"
+            template = "home/login-htmx.html"
         else:
-            template = "home/index.html"
+            template = "home/login.html"
     
         return render_template(template)
 

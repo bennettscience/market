@@ -1,13 +1,13 @@
 from flask import Flask
 
+from config import Config
 from upstream.extensions import db, htmx, login_manager, marshmallow, migrate, partials
 from upstream.blueprints import event, home, item, transaction, user
 
 
 def create_app():
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
-    app.config["SECRET_KEY"] = "mysupersecretkey"
+    app.config.from_object(Config)
 
     db.init_app(app)
     migrate.init_app(app, db)

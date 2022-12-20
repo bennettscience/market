@@ -33,7 +33,7 @@ def login():
         )
     else:
         login_user(user)
-        return redirect(url_for('home.index'))
+        return make_response("", refresh=True, trigger={"showToast": "Logged in successfully!"})
 
 @bp.get("/register")
 def register():

@@ -1,6 +1,7 @@
 from typing import List
 
 from flask import Blueprint, jsonify, render_template
+from flask_login import login_required
 from htmx_flask import make_response
 from sqlalchemy.sql import select, not_
 from webargs import fields
@@ -15,12 +16,14 @@ bp = Blueprint("events", __name__)
 
 
 @bp.get("/events")
+@login_required
 def get_events() -> List[Event]:
     events = Event.query.order_by(Event.starts.desc()).all()
     return jsonify(EventSchema(many=True).dump(events))
 
 
 @bp.get("/events/create")
+@login_required
 def get_event_form():
     return make_response(
         render_template(
@@ -32,6 +35,7 @@ def get_event_form():
 
 
 @bp.post("/events")
+@login_required
 def post_event() -> List[Event]:
     try:
         args = parser.parse(
@@ -52,6 +56,7 @@ def post_event() -> List[Event]:
 
 
 @bp.get("/events/<int:id>")
+@login_required
 def get_single_event(id: int) -> Event:
 
     event = Event.query.filter(Event.id == id).first_or_404()
@@ -70,12 +75,14 @@ def get_single_event(id: int) -> Event:
 
 
 @bp.put("/events/<int:id>")
+@login_required
 def update_single_event(id: int) -> Event:
     # TODO: Add Manager class to Models
     pass
 
 
 @bp.delete("/events/<int:id>")
+@login_required
 def delete_single_event(id: int) -> List[Event]:
     event = Event.query.filter(Event.id == id).first_or_404()
     db.session.delete(event)
@@ -85,6 +92,7 @@ def delete_single_event(id: int) -> List[Event]:
 
 
 @bp.get("/events/<int:event_id>/inventory")
+@login_required
 def get_inventory_form(event_id):
     # Filter out any items that are already included in the event.
     # https://stackoverflow.com/questions/68454651/python-sqlalchemy-how-to-get-all-items-that-are-not-related-to-current-user
@@ -107,6 +115,7 @@ def get_inventory_form(event_id):
 
 # Event Inventory controls
 @bp.post("/events/<int:id>/inventory")
+@login_required
 def post_event_inventory(id: int) -> Event:
     # Post an item to the event
     args = parser.parse(
@@ -124,6 +133,7 @@ def post_event_inventory(id: int) -> Event:
 
 
 @bp.get("/events/<int:event_id>/inventory/<int:item_id>")
+@login_required
 def get_inventory_edit_form(event_id, item_id):
     event = Event.query.filter(Event.id == event_id).first()
 
@@ -137,6 +147,7 @@ def get_inventory_edit_form(event_id, item_id):
 
 
 @bp.put("/events/<int:event_id>/inventory/<int:item_id>")
+@login_required
 def update_event_inventory_item(event_id: int, item_id: int) -> Event:
     # Update the quantity taken to an event
     args = parser.parse({"quantity": fields.Int()}, location="form")

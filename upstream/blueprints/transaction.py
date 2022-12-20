@@ -1,6 +1,7 @@
 from pprint import pprint
 
 from flask import Blueprint, jsonify, render_template
+from flask_login import login_required
 from htmx_flask import make_response
 from webargs import fields
 from webargs.flaskparser import parser
@@ -15,6 +16,7 @@ bp = Blueprint("transactions", __name__)
 
 
 @bp.get("/sales")
+@login_required
 def get_all_sales():
     sales = Transaction.query.order_by(Transaction.occurred_at).all()
     gross = Transaction().gross_sales()
@@ -24,6 +26,7 @@ def get_all_sales():
 
 
 @bp.get("/sales/<int:event_id>")
+@login_required
 def get_sale_form(event_id):
     args = parser.parse({"item_id": fields.Int()}, location="querystring")
     item = Item.query.filter(Item.id == args["item_id"]).first()
@@ -35,6 +38,7 @@ def get_sale_form(event_id):
 
 
 @bp.post("/sales/<int:event_id>")
+@login_required
 def make_sale(event_id):
 
     args = parser.parse(

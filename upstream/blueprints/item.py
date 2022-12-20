@@ -1,6 +1,7 @@
 from typing import List
 
 from flask import Blueprint, jsonify, render_template
+from flask_login import login_required
 from htmx_flask import make_response, request
 from webargs import fields
 from webargs.flaskparser import parser
@@ -13,15 +14,15 @@ from upstream.schemas import ItemSchema
 
 bp = Blueprint("items", __name__)
 
-
 @bp.get("/items")
+@login_required
 def get_items() -> List[Item]:
     items = Item.query.order_by(Item.name).all()
     return render_template("items/items-table.html", items=items)
     # return jsonify(ItemSchema(many=True).dump(items))
 
-
 @bp.get("/items/create")
+@login_required
 def create_item_form():
     return make_response(
         render_template(
@@ -31,8 +32,8 @@ def create_item_form():
         )
     )
 
-
 @bp.post("/items")
+@login_required
 def post_item() -> List[Item]:
     args = parser.parse(ItemSchema(), location="form")
     item = Item(**args)
@@ -45,8 +46,8 @@ def post_item() -> List[Item]:
         trigger={"showToast": "Added item sucecssfully."},
     )
 
-
 @bp.get("/items/<int:id>")
+@login_required
 def get_single_item(id: int) -> Item:
     item = Item.query.filter(Item.id == id).first_or_404()
 
@@ -58,8 +59,8 @@ def get_single_item(id: int) -> Item:
 #     # TODO: Add Manager class to Models
 #     pass
 
-
 @bp.delete("/events/<int:id>")
+@login_required
 def delete_single_item(id: int) -> List[Item]:
     item = Item.query.filter(Item.id == id).first_or_404()
     db.session.delete(item)

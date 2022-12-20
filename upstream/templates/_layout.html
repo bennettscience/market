@@ -16,7 +16,9 @@
         <main>
         {% block sidebar %} {% endblock %} {% block main_content %} {%endblock %}
     </main>
-        {% include 'shared/partials/mobile-create.html' %}
+        {% if not current_user.is_anonymous %}
+            {% include 'shared/partials/mobile-create.html' %}
+        {% endif  %}
         {% include 'shared/partials/toast.html' %}
         <script
             type="module"

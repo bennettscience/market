@@ -503,6 +503,14 @@ main {
     flex-direction: row;
 }
 
+.event__chart {
+    max-width: 100%;
+}
+
+.event__chart svg {
+    max-width: 100%;
+}
+
 /* .event-wrap {
     display: grid;
     grid-template-rows: auto auto;

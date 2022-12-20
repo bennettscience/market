@@ -10,7 +10,7 @@
         </div>
         {% for event in events %}
         <div class="row">
-            <div class="cell" data-title="Event Name">{{ event.name }}</div>
+            <div class="cell" data-title="Event Name">{{ event.market['name'] }}</div>
             <div class="cell" data-title="Event Date">{{ event.starts }}</div>
             <div class="cell" data-title="Inventory">{{ event.inventory|length }}</div>
             <div class="cell" data-title="Actions"><button

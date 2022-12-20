@@ -1,0 +1,9 @@
+<form
+    hx-put="/events/{{data['event']['id']}}/update"
+    hx-trigger="submit"
+    _="on success trigger closeSidebar"
+>
+<p>Add Market Note</p>
+<textarea name="note" cols="30" rows="20">{{data['event']['note']}}</textarea>
+<button type="submit">Save Note</button>
+</form>

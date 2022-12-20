@@ -6,6 +6,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from upstream.extensions import db, login_manager
 
+class Manager(object):
+    def update(self, data):
+        print(data)
+        for key, value in data.items():
+            setattr(self, key, value)
+        db.session.commit()
+
+    def delete(self):
+        pass
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -28,6 +38,11 @@ class Location(db.Model):
     address = db.Column(db.String(250))
 
 
+class Market(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
@@ -43,11 +58,14 @@ class User(UserMixin, db.Model):
 
 
 # One to many
-class Event(db.Model):
+class Event(Manager, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    market_id = db.Column(db.Integer, db.ForeignKey("market.id"), onupdate="CASCADE")
     starts = db.Column(db.DateTime, nullable=False)
     created_at = db.Column(db.DateTime, default=func.now())
+    note = db.Column(db.String(1500))
+
+    market = db.relationship("Market", backref="event", uselist=False)
 
     sales = db.relationship(
         "Transaction", backref="event", lazy="dynamic", uselist=True

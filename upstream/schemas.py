@@ -9,7 +9,7 @@ class EventItemSchema(Schema):
 
 class EventSchema(Schema):
     id = fields.Int(dump_only=True)
-    name = fields.String()
+    market = fields.Nested("MarketSchema")
     starts = fields.DateTime()
 
     inventory = fields.Nested("EventItemSchema", many=True)
@@ -17,6 +17,11 @@ class EventSchema(Schema):
 
 
 class ItemSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.String()
+
+
+class MarketSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.String()
 

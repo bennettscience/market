@@ -5,7 +5,12 @@
     hx-swap="innerHTML"
 >
     <label>Event name
-        <input type="text" name="name" />
+        <select name="market_id">
+            <option value="null">Select market</option>
+            {% for location in data %}
+            <option value="{{location.id}}">{{location.name}}</option>
+            {% endfor %}
+        </select>
     </label>
     <label>Date and time
         <input type="datetime-local" name="starts">

@@ -9,8 +9,8 @@ from webargs.flaskparser import parser
 
 from upstream.charts import EventChartBuilder, ChartService
 from upstream.extensions import db, htmx
-from upstream.models import Event, EventItem, Item
-from upstream.schemas import EventSchema, EventItemSchema
+from upstream.models import Event, EventItem, Item, Market
+from upstream.schemas import EventSchema, MarketSchema
 
 bp = Blueprint("events", __name__)
 
@@ -25,10 +25,12 @@ def get_events() -> List[Event]:
 @bp.get("/events/create")
 @login_required
 def get_event_form():
+    markets = MarketSchema(many=True).dump(Market.query.all())
     return make_response(
         render_template(
             "shared/partials/sidebar.html",
             partial="forms/create-event.html",
+            data=markets,
             push_url="/events/create",
         )
     )
@@ -39,7 +41,7 @@ def get_event_form():
 def post_event() -> List[Event]:
     try:
         args = parser.parse(
-            {"name": fields.String(), "starts": fields.DateTime()}, location="form"
+            {"market_id": fields.Int(), "starts": fields.DateTime()}, location="form"
         )
         event = Event(**args)
         db.session.add(event)
@@ -112,6 +114,30 @@ def get_inventory_form(event_id):
         "shared/partials/sidebar.html", partial="forms/create-inventory.html", data=data
     )
 
+@bp.get("/events/<int:event_id>/update")
+@login_required
+def get_notes_form(event_id):
+
+    event = Event.query.filter(Event.id == event_id).first_or_404()
+    data = {"event": event}
+
+    return render_template(
+        'shared/partials/sidebar.html', 
+        partial='forms/create-event-note.html', data=data
+    )
+
+
+@bp.put("/events/<int:event_id>/update")
+@login_required
+def update_event_note(event_id):
+    args = parser.parse({ "note": fields.Str() }, location="form")
+    event = Event.query.filter(Event.id == event_id).first_or_404()
+
+    breakpoint()
+    event.update(args)
+
+    return make_response("", trigger={"showToast": "Successfully saved the note!", "success": "true"})
+
 
 # Event Inventory controls
 @bp.post("/events/<int:id>/inventory")
@@ -122,6 +148,7 @@ def post_event_inventory(id: int) -> Event:
         {"item_id": fields.Int(), "quantity": fields.Int()}, location="form"
     )
     event = Event.query.filter(Event.id == id).first_or_404()
+    sales = event.gross_sales()
 
     event_item = EventItem(
         event_id=event.id, item_id=args["item_id"], quantity=args["quantity"]
@@ -129,7 +156,16 @@ def post_event_inventory(id: int) -> Event:
     db.session.add(event_item)
     db.session.commit()
 
-    return jsonify(EventSchema().dump(event))
+    data_builder = EventChartBuilder(event)
+    data = data_builder.build()
+
+    service = ChartService(data)
+    chart = service.stacked_bar()
+
+    return make_response(
+        render_template('events/partials/event-table.html', event=event, sales=sales, chart=chart),
+        trigger={"showToast": f"Added {event_item.item.name.lower()}s to the market.", "success": "true"}
+    )
 
 
 @bp.get("/events/<int:event_id>/inventory/<int:item_id>")

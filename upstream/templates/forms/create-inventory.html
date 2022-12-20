@@ -2,8 +2,9 @@
 <form
     hx-trigger="submit"
     hx-post="/events/{{data['event']}}/inventory"
-    hx-swap="none"
-    _="on htmx:afterRequest remove me"
+    hx-swap="outerHTML"
+    hx-target=".event__header"
+    _="on success remove me"
 >
     <p>{{item.name}}</p>
     <input type="hidden" name="item_id" value="{{item.id}}" />

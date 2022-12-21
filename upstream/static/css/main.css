@@ -503,11 +503,11 @@ main {
     flex-direction: row;
 }
 
-.event__chart {
+.chart {
     max-width: 100%;
 }
 
-.event__chart svg {
+.chart svg {
     max-width: 100%;
 }
 

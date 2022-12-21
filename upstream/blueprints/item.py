@@ -52,10 +52,13 @@ def get_single_item(id: int) -> Item:
     from upstream.charts import ItemChartBuilder
     item = Item.query.filter(Item.id == id).first_or_404()
 
-    builder = ItemChartBuilder(item)
-    chart = builder.build()
+    if item.sales:
+        builder = ItemChartBuilder(item)
+        chart = builder.build()
+    else:
+        chart = 'No data.'
 
-    return render_template("items/item-detail.html", item=item)
+    return render_template("items/item-detail.html", item=item, chart=chart)
 
 
 # @bp.put("/events/<int:id>")

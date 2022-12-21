@@ -1,5 +1,6 @@
 import base64
 from io import BytesIO
+from sqlalchemy import and_
 
 # matplotlib has to be opened without the GUI event loop connection to run on the server.
 # see https://stackoverflow.com/questions/51188461/using-pyplot-close-crashes-the-flask-app
@@ -45,21 +46,31 @@ class ItemChartBuilder:
         self.item = item
 
     def __create_line_figure(self):
-        from upstream.models import Transaction
-        fig = Figure()
-        df = pd.read_sql_query(
-            sql=db.session.query(
-                Transaction.event_id,
-                Transaction.event_item_id, 
-                Transaction.occurred_at, 
-                Transaction.price_per_item, 
-                Transaction.quantity).filter(
-                    Transaction.event_item_id == self.item.id).statement, 
+        from upstream.models import Event, Market, Transaction
+        markets = Market.query.all()
+        colors = ['#000', '#b73351', '#7abbff' ]
+        fig = Figure(figsize=(10.0, 5.0))
+        ax = fig.subplots(1, 1)
+
+        df = pd.read_sql(
+            db.session.query(
+                Event, 
+                Transaction).outerjoin(
+                    Event, 
+                    Transaction.event_id == Event.id, 
+                    ).filter(Transaction.event_item_id == self.item.id).statement, 
             con=db.engine
         )
 
-        sales = df['quantity'].groupby(df['event_id']).sum()
-        plt.plot(sales)
+        sales = df.groupby(['market_id', 'starts']).agg({'quantity': 'sum'})
+
+        for market in markets:
+            if sales['quantity'].get(market.id) is not None:
+                ax.plot(sales['quantity'].get(market.id), marker='o', color=colors[market.id], label=market.name)
+
+        plt.xticks(rotation=45)
+        ax.tick_params(axis="x", labelsize=10)
+        ax.legend()
 
         return fig
     

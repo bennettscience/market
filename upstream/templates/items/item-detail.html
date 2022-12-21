@@ -1,7 +1,8 @@
 <h1>{{item.name}}</h1>
 
-<h2>Sale records</h2>
-<i>A complete record of sales, ordered by date, for this item.</i>
+<div class="chart" id="item-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
+
+<h2>Records</h2>
 <div class="table">
     <div class="row header">
         <div class="cell">Sale Date</div>
@@ -18,7 +19,6 @@
 </div>
 
 <h2>Events</h2>
-<i>This shows every event this item has been taken to.</i>
 <div class="table">
     <div class="row header red">
         <div class="cell">Event Date</div>

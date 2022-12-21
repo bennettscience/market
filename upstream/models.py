@@ -60,7 +60,7 @@ class User(UserMixin, db.Model):
 # One to many
 class Event(Manager, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    market_id = db.Column(db.Integer, db.ForeignKey("market.id"), onupdate="CASCADE")
+    market_id = db.Column(db.Integer, db.ForeignKey("market.id"), nullable=False)
     starts = db.Column(db.DateTime, nullable=False)
     created_at = db.Column(db.DateTime, default=func.now())
     note = db.Column(db.String(1500))

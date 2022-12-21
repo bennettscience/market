@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 
 from upstream.extensions import db, htmx, login_manager, marshmallow, migrate, partials
 from upstream.blueprints import event, home, item, transaction, user
 
 
 def create_app(config):
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/static')
     app.config.from_object(config)
 
     db.init_app(app)
@@ -21,6 +21,10 @@ def create_app(config):
     app.register_blueprint(item.bp)
     app.register_blueprint(transaction.bp)
     app.register_blueprint(user.bp)
+
+    @app.route('/manifest.json')
+    def mainfest():
+        return send_from_directory('static', 'manifest.json')
 
     @app.cli.command("setup")
     def setup():

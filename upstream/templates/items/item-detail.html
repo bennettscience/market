@@ -1,21 +1,32 @@
 <h1>{{item.name}}</h1>
 
-<div class="chart" id="item-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
+<section class="page__header">
+    <div class="chart" id="item-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
+    <!-- <section class="item__sales">
+        <div class="number-box--big">
+            <p class="large">{{ "${:,.2f}".format(item.gross_sales()) }}</p><p>Item sales</p>
+        </div>
+    </section> -->
+</section>
 
 <h2>Records</h2>
-<div class="table">
-    <div class="row header">
-        <div class="cell">Sale Date</div>
-        <div class="cell">Quantity</div>
-        <div class="cell">Unit Price</div>
+<div class="table-wrap">
+    <div class="table">
+        <div class="row header">
+            <div class="cell">Sale Date</div>
+            <div class="cell">Quantity</div>
+            <div class="cell">Unit Price</div>
+            <div class="cell">Gross</div>
+        </div>
+        {% for sale in item.sales %}
+        <div class="row">
+            <div class="cell" data-title="Sale Date">{{ sale.occurred_at }}</div>
+            <div class="cell" data-title="Quantity">{{sale.quantity}}</div>
+            <div class="cell" data-title="Unit Price">{{ "${:,.2f}".format(sale.price_per_item) }}</div>
+            <div class="cell" data-title="Gross">{{ "${:,.2f}".format(sale.price_per_item * sale.quantity) }}</div>
+        </div>
+        {% endfor %}
     </div>
-    {% for sale in item.sales %}
-    <div class="row">
-        <div class="cell" data-title="Sale Date">{{ sale.occurred_at }}</div>
-        <div class="cell" data-title="Quantity">{{sale.quantity}}</div>
-        <div class="cell" data-title="Unit Price">{{sale.price_per_item}}</div>
-    </div>
-    {% endfor %}
 </div>
 
 <h2>Events</h2>

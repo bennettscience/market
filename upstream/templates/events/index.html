@@ -3,6 +3,7 @@
         <section class="event__meta">
             <h1>{{ event.market.name }}</h1>
             <p>{{event.starts}}</p>
+            <div class="event__actions">
                 <button
                 class="btn btn--primary"
                 hx-get="/events/{{event.id}}/inventory"
@@ -15,6 +16,7 @@
                 hx-target="main"
                 hx-swap="beforeend"
                 >Add Note</button>
+            </div>
         </section>
         
         <section class="event event__sales">

@@ -132,6 +132,10 @@ label {
     box-shadow: var(--active-shadow);
 }
 
+.btn__flat:hover {
+    box-shadow: none;
+}
+
 .btn__small {
     width: auto;
     margin: 0;
@@ -344,6 +348,12 @@ main {
     /* background-color: #fefefe; */
 }
 
+.table-wrap {
+    display: block;
+    max-height: 250px;
+    overflow: scroll;
+}
+
 .table {
     width: 100%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -355,15 +365,13 @@ main {
     background: #f6f6f6;
 }
 
-.row:not(.header):hover {
-    filter: brightness(90%);
-}
-
 .row:nth-of-type(odd) {
     background: #e9e9e9;
 }
 
 .row.header {
+    position: sticky;
+    top: 0;
     font-weight: 900;
     color: #ffffff;
     background: var(--accent-green);
@@ -480,6 +488,7 @@ main {
 /* Generic page elements */
 .page__header {
     display: flex;
+    gap: 1.2rem;
     align-items: center;
     justify-content: space-between;
 }
@@ -511,54 +520,18 @@ main {
     max-width: 100%;
 }
 
-/* .event-wrap {
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 2fr;
-    grid-template-areas: "title chart" "stats pos";
-    gap: 1.2rem;
-}
-
-.event__chart {
-    grid-area: chart;
-}
-
-.event__chart svg {
-    width: 100%;
-    height: auto;
-}
-
-.event-wrap__left {
-    grid-area: stats;
-    display: flex;
-    flex-direction: column;
-}
-
-.event-wrap__right {
-    grid-area: pos;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    gap: 1.2rem;
-} */
-
 .event__header {
-    /* grid-area: title; */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.event__meta {
-    grid-area: title;
-}
-
 .event__actions {
-    grid-area: actions;
+    display: flex;
+    gap: 1.2rem;
 }
 
-.event__sales {
+.event__sales, .item__sales {
     grid-area: sales;
     flex-direction: row;
     justify-content: flex-start;
@@ -606,6 +579,25 @@ main {
     background-color: var(--site-gray);
     position: sticky;
     top: 0;
+}
+
+/*  FORMS  */
+
+input, select {
+    display: block;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0.3rem 0 0.3rem 0.3rem;
+    line-height: 1.2;
+}
+
+textarea {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+select {
+    width: 100%;
 }
 
 input[type="search"] {

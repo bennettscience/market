@@ -1,7 +1,7 @@
 <div class="event-wrap">
     <section class="event__header">
         <section class="event__meta">
-            <h1>{{ event.name }}</h1>
+            <h1>{{ event.market.name }}</h1>
             <p>{{event.starts}}</p>
                 <button
                 class="btn btn--primary"
@@ -9,6 +9,12 @@
                 hx-target="main"
                 hx-swap="beforeend"
                 >Add Inventory</button>
+                <button
+                class="btn"
+                hx-get="/events/{{event.id}}/update"
+                hx-target="main"
+                hx-swap="beforeend"
+                >Add Note</button>
         </section>
         
         <section class="event event__sales">

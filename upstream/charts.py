@@ -71,6 +71,7 @@ class ItemChartBuilder:
         plt.xticks(rotation=45)
         ax.tick_params(axis="x", labelsize=10)
         ax.legend()
+        ax.grid(True)
 
         return fig
     

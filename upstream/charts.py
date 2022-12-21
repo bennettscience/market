@@ -4,12 +4,16 @@ from io import BytesIO
 # matplotlib has to be opened without the GUI event loop connection to run on the server.
 # see https://stackoverflow.com/questions/51188461/using-pyplot-close-crashes-the-flask-app
 import matplotlib
+import pandas as pd
 
 matplotlib.use("agg")
+
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.backends.backend_svg import FigureCanvasSVG
 from matplotlib.figure import Figure
+
+from upstream.extensions import db
 
 
 class EventChartBuilder:
@@ -32,6 +36,38 @@ class EventChartBuilder:
             data["sold"].append(item.sold)
             data["remains"].append(item.available)
 
+        return data
+
+class ItemChartBuilder:
+    # Handle creating multi-line plots to show sales at events.
+    # This is for single items
+    def __init__(self, item):
+        self.item = item
+
+    def __create_line_figure(self):
+        from upstream.models import Transaction
+        fig = Figure()
+        df = pd.read_sql_query(
+            sql=db.session.query(
+                Transaction.event_id,
+                Transaction.event_item_id, 
+                Transaction.occurred_at, 
+                Transaction.price_per_item, 
+                Transaction.quantity).filter(
+                    Transaction.event_item_id == self.item.id).statement, 
+            con=db.engine
+        )
+
+        sales = df['quantity'].groupby(df['event_id']).sum()
+        plt.plot(sales)
+
+        return fig
+    
+    def build(self):
+        fig = self.__create_line_figure()
+        output = BytesIO()
+        FigureCanvasSVG(fig).print_svg(output)
+        data = output.getvalue().decode("ascii")
         return data
 
 
@@ -81,10 +117,6 @@ class ChartService:
         output = BytesIO()
         FigureCanvasSVG(fig).print_svg(output)
         data = output.getvalue().decode("ascii")
-        # fig.savefig(output, format="svg")
-        # output.seek(0)
-        # data = base64.b64encode(output.getbuffer()).decode("ascii")
-        # FigureCanvas(fig).print_png(output)
         return data
 
     def pie(self):

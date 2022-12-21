@@ -49,7 +49,11 @@ def post_item() -> List[Item]:
 @bp.get("/items/<int:id>")
 @login_required
 def get_single_item(id: int) -> Item:
+    from upstream.charts import ItemChartBuilder
     item = Item.query.filter(Item.id == id).first_or_404()
+
+    builder = ItemChartBuilder(item)
+    chart = builder.build()
 
     return render_template("items/item-detail.html", item=item)
 

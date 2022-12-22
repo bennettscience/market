@@ -112,7 +112,9 @@ label {
 .btn {
     font-weight: 700;
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: transparent;
     height: 36px;
     cursor: pointer;
     display: flex;
@@ -120,7 +122,7 @@ label {
     align-items: center;
     justify-content: center;
     transition: 0.125s all ease-in-out;
-    border-style: none;
+    border-style: solid;
     color: var(--site-dark);
 }
 
@@ -132,8 +134,14 @@ label {
     box-shadow: var(--active-shadow);
 }
 
+.btn--flat {
+    background-color: transparent;
+}
+
 .btn__flat:hover {
+    cursor: pointer;
     box-shadow: none;
+    border-color: var(--site-dark);
 }
 
 .btn__small {
@@ -186,17 +194,6 @@ label {
 /* left align the new event and new location buttons */
 #btn--new-event, #btn--new-location {
     margin: 0;
-}
-
-.btn--close {
-    background-color: transparent;
-    border: 1px solid;
-    border-color: transparent;
-}
-
-.btn--close:hover {
-    cursor: pointer;
-    border-color: var(--black);
 }
 
 /* Hold the new button and the actions menu */

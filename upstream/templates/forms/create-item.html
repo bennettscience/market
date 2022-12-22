@@ -2,9 +2,10 @@
     hx-trigger="submit"
     hx-post="/items"
     hx-swap="none"
+    _="on htmx:afterRequest reset() me"
 >
     <label>Item name
-    <input type="text" name="name" />
+    <input type="text" name="name"/>
     </label>
     <button class="btn btn--primary" type="submit">Submit</button>
 </form>

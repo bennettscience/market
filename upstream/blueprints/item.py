@@ -41,9 +41,7 @@ def post_item() -> List[Item]:
     db.session.commit()
 
     return make_response(
-        render_template("/home/index.html", events=Event.query.all()),
-        push_url="/",
-        trigger={"showToast": "Added item sucecssfully."},
+        trigger={"showToast": "Added item sucecssfully.", "clearInput": "true"},
     )
 
 @bp.get("/items/<int:id>")

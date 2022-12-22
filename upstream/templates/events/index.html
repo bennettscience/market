@@ -38,25 +38,22 @@
                 <div class="cell">Item Name</div>
                 <div class="cell">Remaining</div>
                 <div class="cell">Sales</div>
+                <div class="cell">Actions</div>
             </div>
             {% for record in event.inventory %}
             <div class="row">
                 <div class="cell" data-title="Item Name">{{ record.item.name }}</div>
                 <div class="cell" data-title="Remaining">{{ record.available }}</div>
+                <div class="cell" data-title="Sold">{{ record.sold }}</div>
                 <div 
-                    class="cell flex-cell" 
-                    data-title="Actions"
-                    hx-trigger="edit"
-                    _="on click
-                         if .editing is not empty
-                           showToast('You\'re already editing a row.')
-                         end
-                         trigger edit"
+                class="cell" 
+                data-title="Actions"
+                ><button 
+                    class="btn"
                     hx-get="/sales/{{event.id}}?item_id={{record.item.id}}"
-                    hx-swap="outerHTML"
-                    >
-                    {{ record.sold }}
-                </div>
+                    hx-target="main"
+                    hx-swap="afterend">Add sale record</button>
+            </div>
             </div>
             {% endfor %}
         </div>

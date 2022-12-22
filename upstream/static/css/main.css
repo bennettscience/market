@@ -25,6 +25,7 @@
 
 * {
     box-sizing: border-box;
+    max-width: 100%;
 }
     
 
@@ -84,8 +85,6 @@ em {
 
 button:hover {
     cursor: pointer;
-    background-color: var(--text-white);
-    color: var(--site-dark);
 }
 
 button[type='submit']:focus {
@@ -157,6 +156,15 @@ label {
     background-color: var(--accent-blue);
     border-color: var(--accent-blue);
     color: var(--text-white)
+}
+
+.btn--primary:hover {
+    background-color: var(--text-white);
+    color: var(--site-dark);
+}
+
+.btn--primary:hover svg > path {
+    fill: var(--site-dark);
 }
 
 .btn--sale {
@@ -455,17 +463,19 @@ main {
     justify-content: space-between;
     align-items: center;
     opacity: 0;
-    top: 90%;
+    bottom: 1.5rem;
     left: 1.5rem;
     min-width: 250px;
     margin: 0;
     padding: 0;
     transition: all 350ms;
-    z-index: 1000;
+    z-index: 1;
     border-radius: 3px;
     background-color: var(--site-dark);
     color: var(--text-white);
+    pointer-events: none;
 }
+
 #toast.show {
     opacity: 1;
 }
@@ -514,6 +524,7 @@ main {
 }
 
 .chart svg {
+    height: auto;
     max-width: 100%;
 }
 
@@ -585,6 +596,7 @@ input, select {
     font-size: inherit;
     font-family: inherit;
     padding: 0.3rem 0 0.3rem 0.3rem;
+    margin-bottom: 0.6rem;
     line-height: 1.2;
 }
 
@@ -627,6 +639,23 @@ input[type="search"] {
 
     main {
         margin: 1.2rem 0.6rem;
+    }
+
+    .btn {
+        height: 3rem;
+    }
+
+    .event__header {
+        flex-wrap: wrap;
+        gap: 1.2rem;
+    }
+
+    .event__meta {
+        width: 100%;
+    }
+
+    .event__actions {
+        justify-content: space-between;
     }
 
     .number-box--big {
@@ -682,5 +711,16 @@ input[type="search"] {
 
     .hide--right {
         right: -75%;       
+    }
+
+    .actions--wrapper {
+        flex-direction: column;
+        bottom: 0;
+        right: 0;
+    }
+
+    .actions--wrapper.show {
+        bottom: 5rem;
+        right: 0;
     }
 }

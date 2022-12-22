@@ -7,19 +7,7 @@
         <div class="number-box--big"><p class="large">{{ "${:,.2f}".format(gross) }}</p><p>Total sales</p></div>
     </section>
 </section>
-<div class="search-wrap">
-    <input
-    type="search"
-    placeholder="Search..."
-    _="on keyup
-    if the event's key is 'Escape'
-    set my value to ''
-    trigger keyup
-    else
-    show .row in .table when its textContent contains my value
-    "
-    />
-</div>
+{% include 'shared/partials/search.html' %}
 <div class="table">
     <div class="row header">
         <div class="cell">Date</div>

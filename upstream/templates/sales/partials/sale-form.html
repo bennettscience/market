@@ -4,7 +4,7 @@
     hx-trigger="submit"
     hx-target=".event__header"
     hx-swap="outerHTML"
-    _="on saleComplete remove me"
+    _="on saleComplete reset() me"
 >
 <input type="hidden" name="event_item_id" value="{{data.item.id}}" />
 <input type="number" name="quantity" value="" placeholder="quantity" />

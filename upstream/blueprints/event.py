@@ -35,7 +35,6 @@ def get_event_form():
         )
     )
 
-
 @bp.post("/events")
 @login_required
 def post_event() -> List[Event]:

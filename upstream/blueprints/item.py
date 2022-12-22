@@ -49,8 +49,8 @@ def post_item() -> List[Item]:
 def get_single_item(id: int) -> Item:
     from upstream.charts import ItemChartBuilder
     item = Item.query.filter(Item.id == id).first_or_404()
-
-    if item.sales:
+    
+    if item.sales.all():
         builder = ItemChartBuilder(item)
         chart = builder.build()
     else:

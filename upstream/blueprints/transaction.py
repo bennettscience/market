@@ -32,10 +32,10 @@ def get_sale_form(event_id):
     item = Item.query.filter(Item.id == args["item_id"]).first()
     data = {"event_id": event_id, "item": item}
     return render_template(
-        "sales/partials/sale-form.html",
+        "shared/partials/sidebar.html",
+        partial="sales/partials/sale-form.html",
         data=data,
     )
-
 
 @bp.post("/sales/<int:event_id>")
 @login_required

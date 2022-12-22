@@ -12,6 +12,7 @@ matplotlib.use("agg")
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.backends.backend_svg import FigureCanvasSVG
+import matplotlib.dates as mdates
 from matplotlib.figure import Figure
 
 from upstream.extensions import db
@@ -49,7 +50,7 @@ class ItemChartBuilder:
         from upstream.models import Event, Market, Transaction
         markets = Market.query.all()
         colors = ['#000', '#b73351', '#7abbff' ]
-        fig = Figure(figsize=(10.0, 5.0))
+        fig = Figure()
         ax = fig.subplots(1, 1)
 
         df = pd.read_sql(
@@ -62,16 +63,23 @@ class ItemChartBuilder:
             con=db.engine
         )
 
-        sales = df.groupby(['market_id', 'starts']).agg({'quantity': 'sum'})
+        sales = df.groupby(['market_id', df['starts'].dt.date]).agg({'quantity': 'sum'})
 
         for market in markets:
             if sales['quantity'].get(market.id) is not None:
                 ax.plot(sales['quantity'].get(market.id), marker='o', color=colors[market.id], label=market.name)
 
-        plt.xticks(rotation=45)
-        ax.tick_params(axis="x", labelsize=10)
         ax.legend()
         ax.grid(True)
+        ax.set_ylabel("Sales")
+        ax.set_xlabel("Date")
+        ax.set_xlim([df['starts'].dt.date.min(), df['starts'].dt.date.max()])
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
+        # plt.setp(ax.get_xticklabels(), rotation=45)
+        plt.rc('font', size=10)
+
+        for spine in ax.spines.values():
+            spine.set_edgecolor((0, 0, 0, 0.1))
 
         return fig
     

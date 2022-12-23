@@ -10,7 +10,8 @@ class EventItemSchema(Schema):
 class EventSchema(Schema):
     id = fields.Int(dump_only=True)
     market = fields.Nested("MarketSchema")
-    starts = fields.DateTime()
+    starts = fields.DateTime(format="%m/%d/%y %I:%M %p")
+    note = fields.String()
 
     inventory = fields.Nested("EventItemSchema", many=True)
     sales = fields.Nested("TransactionSchema", many=True)

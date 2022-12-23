@@ -2,7 +2,7 @@ from typing import List
 
 from flask import Blueprint, jsonify, render_template
 from flask_login import login_required
-from htmx_flask import make_response
+from htmx_flask import make_response, request
 from sqlalchemy.sql import select, not_
 from webargs import fields
 from webargs.flaskparser import parser
@@ -71,8 +71,21 @@ def get_single_event(id: int) -> Event:
         chart = service.stacked_bar()
     else:
         chart = "No data to display."
+    
+    resp_data = {
+        "event": EventSchema().dump(event),
+        "sales": sales,
+        "chart": chart
+    }
 
-    return render_template("events/index.html", event=EventSchema().dump(event), sales=sales, chart=chart)
+    template = "events/index.html"
+
+    if request.htmx:
+        resp = render_template(template, **resp_data)
+    else:
+        resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
+
+    return resp
 
 
 @bp.put("/events/<int:id>")

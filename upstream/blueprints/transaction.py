@@ -2,7 +2,7 @@ from pprint import pprint
 
 from flask import Blueprint, jsonify, render_template
 from flask_login import login_required
-from htmx_flask import make_response
+from htmx_flask import make_response, request
 from webargs import fields
 from webargs.flaskparser import parser
 
@@ -18,11 +18,22 @@ bp = Blueprint("transactions", __name__)
 @bp.get("/sales")
 @login_required
 def get_all_sales():
+    template = "sales/index.html"
+
     sales = Transaction.query.order_by(Transaction.occurred_at).all()
     gross = Transaction().gross_sales()
-    return render_template(
-        "sales/index.html", sales=TransactionSchema(many=True).dump(sales), gross=gross
-    )
+
+    resp_data = {
+        "sales": TransactionSchema(many=True).dump(sales),
+        "gross": gross
+    }
+
+    if request.htmx:
+        resp = render_template(template, **resp_data)
+    else:
+        resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
+
+    return resp
 
 
 @bp.get("/sales/<int:event_id>")

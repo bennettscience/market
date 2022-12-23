@@ -11,23 +11,29 @@ bp = Blueprint("home", __name__)
 
 @bp.get("/")
 def index():
-
     if not current_user.is_anonymous and session['_fresh']:
         
         events = Event.query.order_by(Event.starts.desc()).all()
-        if request.htmx:
-            template = "home/index-htmx.html"
-        else:
-            template = "home/index.html"
+        template = "home/index.html"
 
-        return render_template(template, events=EventSchema(many=True).dump(events))
-    else:
+        resp_data = {
+            "events": EventSchema(many=True).dump(events)
+        }
+
         if request.htmx:
-            template = "home/login-htmx.html"
+            resp = render_template(template, **resp_data)
         else:
-            template = "home/login.html"
+            resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
+
+        return resp
+    else:
+        template = "home/login.html"
+        if request.htmx:
+            resp = render_template(template)
+        else:
+            resp = render_template("shared/layout-wrap.html", partial=template, data={})
     
-        return render_template(template)
+        return resp
 
 
 @bp.get("/stats")

@@ -17,9 +17,19 @@ bp = Blueprint("items", __name__)
 @bp.get("/items")
 @login_required
 def get_items() -> List[Item]:
+    template = 'items/index.html'
     items = Item.query.order_by(Item.name).all()
-    return render_template("items/items-table.html", items=items)
-    # return jsonify(ItemSchema(many=True).dump(items))
+
+    resp_data = {
+        "items": ItemSchema(many=True).dump(items)
+    }
+
+    if request.htmx:
+        resp = render_template(template, items=items)
+    else:
+        resp = render_template('shared/layout-wrap.html', partial=template, data=resp_data)
+
+    return resp
 
 @bp.get("/items/create")
 @login_required
@@ -49,6 +59,8 @@ def post_item() -> List[Item]:
 def get_single_item(id: int) -> Item:
     from upstream.charts import ItemChartBuilder
     item = Item.query.filter(Item.id == id).first_or_404()
+
+    template = "items/item-detail.html"
     
     if item.sales.all():
         builder = ItemChartBuilder(item)
@@ -56,13 +68,18 @@ def get_single_item(id: int) -> Item:
     else:
         chart = 'No data.'
 
-    return render_template("items/item-detail.html", item=item, chart=chart)
+    resp_data = {
+        "item": item,
+        "chart": chart
+    }
 
+    if request.htmx:
+        resp = render_template(template, **resp_data)
+    else:
+        resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
 
-# @bp.put("/events/<int:id>")
-# def update_single_event(id: int) -> Event:
-#     # TODO: Add Manager class to Models
-#     pass
+    return resp
+
 
 @bp.delete("/events/<int:id>")
 @login_required

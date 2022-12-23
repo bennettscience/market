@@ -8,7 +8,7 @@ from upstream.extensions import db, login_manager
 
 class Manager(object):
     def update(self, data):
-        print(data)
+
         for key, value in data.items():
             setattr(self, key, value)
         db.session.commit()

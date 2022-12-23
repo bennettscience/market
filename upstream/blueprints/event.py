@@ -73,7 +73,7 @@ def get_single_event(id: int) -> Event:
         chart = "No data to display."
     
     resp_data = {
-        "event": EventSchema().dump(event),
+        "event": event,
         "sales": sales,
         "chart": chart
     }

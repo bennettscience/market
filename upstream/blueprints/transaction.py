@@ -24,7 +24,7 @@ def get_all_sales():
     gross = Transaction().gross_sales()
 
     resp_data = {
-        "sales": TransactionSchema(many=True).dump(sales),
+        "sales": sales,
         "gross": gross
     }
 

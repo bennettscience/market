@@ -72,7 +72,7 @@ def get_single_event(id: int) -> Event:
     else:
         chart = "No data to display."
 
-    return render_template("events/index.html", event=event, sales=sales, chart=chart)
+    return render_template("events/index.html", event=EventSchema().dump(event), sales=sales, chart=chart)
 
 
 @bp.put("/events/<int:id>")
@@ -132,7 +132,6 @@ def update_event_note(event_id):
     args = parser.parse({ "note": fields.Str() }, location="form")
     event = Event.query.filter(Event.id == event_id).first_or_404()
 
-    breakpoint()
     event.update(args)
 
     return make_response("", trigger={"showToast": "Successfully saved the note!", "success": "true"})

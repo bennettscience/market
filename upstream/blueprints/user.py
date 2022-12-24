@@ -10,14 +10,6 @@ from upstream.models import User
 bp = Blueprint("user", __name__)
 
 
-@bp.route("/users/<string:name>")
-def create(name):
-    user = User(name=name)
-    db.session.add(user)
-    db.session.commit()
-
-    return "Created user!"
-
 @bp.post("/login")
 def login():
     args = parser.parse({
@@ -29,10 +21,10 @@ def login():
 
     if not user:
         return make_response(
-            render_template("home/login-htmx.html"), trigger={"showToast": "Wrong username or password."}
+            render_template("home/login.html"), trigger={"showToast": "Wrong username or password."}
         )
     else:
-        login_user(user)
+        login_user(user, remember=True)
         return make_response("", refresh=True, trigger={"showToast": "Logged in successfully!"})
 
 @bp.get("/register")
@@ -52,7 +44,7 @@ def create_user():
     
     user = User.query.filter(User.name == args['name']).first()
     if user:
-        return render_template('home/register.html', name=args['name'])
+        return render_template('home/login.html', name=args['name'])
     else:
         if args["password"] == args["password-repeat"]:
             user = User(
@@ -63,8 +55,12 @@ def create_user():
             db.session.add(user)
             db.session.commit()
 
-            login_user(user)
-            return render_template('home/index-htmx.html')
+            login_user(user, remember=True)
+            return make_response(
+                redirect(''),
+                refresh=True,
+                trigger={"showToast": "Success!"}
+            )
         else:
             return "Your passwords do not match."
 

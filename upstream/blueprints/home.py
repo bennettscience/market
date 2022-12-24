@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import abort, current_app, Blueprint, render_template, session
 from flask_login import current_user
 from htmx_flask import request
 
@@ -11,7 +11,7 @@ bp = Blueprint("home", __name__)
 
 @bp.get("/")
 def index():
-    if not current_user.is_anonymous and session['_fresh']:
+    if not current_user.is_anonymous:
         
         events = Event.query.order_by(Event.starts.desc()).all()
         template = "home/index.html"
@@ -34,7 +34,6 @@ def index():
             resp = render_template("shared/layout-wrap.html", partial=template, data={})
     
         return resp
-
 
 @bp.get("/stats")
 def all_stats():

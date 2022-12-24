@@ -30,7 +30,7 @@
                 Home
             </a>
         </span>
-        {% if not current_user.is_anonymous %}
+        <!-- {% if not current_user.is_anonymous %} -->
         <span class="nav__item" id="items">
                 <a
                     hx-get="{{url_for('items.get_items')}}"
@@ -83,6 +83,6 @@
                     Sales
                 </a>
         </span>
-        {% endif %}
+        <!-- {% endif %} -->
     </div>
 </nav>

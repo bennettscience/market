@@ -1,9 +1,11 @@
-from flask import abort, current_app, Blueprint, render_template, session
+from flask import abort, current_app, Blueprint, redirect, render_template, session
 from flask_login import current_user
-from htmx_flask import request
+from htmx_flask import make_response, request
+from webargs import fields
+from webargs.flaskparser import parser
 
-from upstream.charts import ChartService
-from upstream.models import Event, Item
+from flask_login import login_user
+from upstream.models import Event, User
 from upstream.schemas import EventSchema
 
 bp = Blueprint("home", __name__)
@@ -34,6 +36,23 @@ def index():
             resp = render_template("shared/layout-wrap.html", partial=template, data={})
     
         return resp
+
+@bp.get("/login")
+def login():
+    args = parser.parse({"login_token": fields.Str()}, location="querystring")
+    if not args['login_token']:
+        abort(403)
+    elif args['login_token'] != current_app.config.get('LOGIN_TOKEN'):
+        abort(403)
+    elif args['login_token'] == current_app.config.get('LOGIN_TOKEN'):
+        user = User.query.filter(User.name == "upstream").first()
+        login_user(user, remember=True)
+
+        return make_response(
+            redirect('/'),
+            refresh=True,
+            trigger={"showToast": "Successfully logged in!"}
+        )
 
 @bp.get("/stats")
 def all_stats():

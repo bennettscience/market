@@ -35,6 +35,8 @@ body {
     padding: 0;
     font-family: "Inter", Arial, Helvetica, sans-serif;
     background-color: var(--site-gray);
+    height: 100%;
+    width: 100%;
 }
 
 /* Typography */
@@ -207,17 +209,25 @@ label {
 /* Hold the new button and the actions menu */
 .create-new-button-container {
     height: auto;
-    width: 100%;
+    width: auto;
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    transition: width 150ms ease-in-out;
+}
+
+.create-new-button-container.show {
+    width: 100%;
 }
 
 /* Create new item button */
 #create-new {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
     display: flex;
     width: 64px;
     height: 64px;
@@ -225,7 +235,7 @@ label {
     /* font-size: 2rem; */
     text-align: center;
     margin: 0;
-    z-index:10;
+    z-index:1;
     transform-origin: center;
     transform-box: fill-box;
     transition: all 150ms ease-in-out;
@@ -239,29 +249,26 @@ label {
 
 /* popup menu when the new button is clicked */
 .actions--wrapper {
-    color: var(--black);
     width: auto;
     opacity: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.6rem;
     transition: all 150ms ease-in-out;
     position: absolute;
-    right: 0;
+    right: 1.5rem;
+    bottom: 0;
 }
 
 .actions--wrapper.show {
+    bottom: 7rem;
     opacity: 1;
-    right: 70px;
 }
 
 .actions--wrapper button {
-    display: flex;
-    gap: 0.3rem;
     padding: 0.6rem 1.2rem;
     border-radius: 3px;
     flex-grow: 1;
-    width: auto;
 }
 
 a[role='button'] {
@@ -714,16 +721,5 @@ input[type="search"] {
 
     .hide--right {
         right: -75%;       
-    }
-
-    .actions--wrapper {
-        flex-direction: column;
-        bottom: 0;
-        right: 0;
-    }
-
-    .actions--wrapper.show {
-        bottom: 5rem;
-        right: 0;
     }
 }

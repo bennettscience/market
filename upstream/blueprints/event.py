@@ -49,7 +49,7 @@ def post_event() -> List[Event]:
         events = Event.query.order_by(Event.starts.desc()).all()
 
         return render_template(
-            "home/index-htmx.html",
+            "home/index.html",
             events=EventSchema(many=True).dump(events),
         )
     except Exception as e:

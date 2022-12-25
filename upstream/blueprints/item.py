@@ -50,7 +50,10 @@ def post_item() -> List[Item]:
     db.session.add(item)
     db.session.commit()
 
+    items = Item.query.order_by('name').all()
+
     return make_response(
+        render_template("items/index.html", items=ItemSchema(many=True).dump(items)),
         trigger={"showToast": "Added item sucecssfully.", "clearInput": "true"},
     )
 

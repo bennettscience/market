@@ -1,7 +1,8 @@
 <form
     hx-trigger="submit"
     hx-post="/items"
-    hx-swap="none"
+    hx-swap="innerHTML"
+    hx-target="main"
     _="on htmx:afterRequest reset() me"
 >
     <label>Item name

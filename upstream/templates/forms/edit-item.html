@@ -1,0 +1,15 @@
+<form
+    hx-trigger="submit"
+    hx-post="/items/{{id}}/edit"
+    hx-swap="innerHTML"
+    hx-target="main"
+    _="on htmx:afterRequest reset() me"
+>
+    <label>Item name
+    <input type="text" name="name" value="{{name}}"/>
+		</label>
+		<label>Abbreviation
+    <input type="text" name="abbreviation" value="{{abbreviation}}" />
+		</label>
+    <button class="btn btn--primary" type="submit">Submit</button>
+</form>

@@ -7,18 +7,35 @@
     {% for item in items %}
     <div class="row">
         <div class="cell" data-title="Item Name">{{ item.name }}</div>
-        <div class="cell" data-title="Actions"><button
-            type="button"
-            class="btn btn__flat btn--wide"
-            hx-trigger="click"
-            hx-get="/items/{{item.id}}"
-            hx-target="main"
-            hx-swap="innerHTML"
-            hx-push-url="true"
+        <div class="cell flex-cell" data-title="Actions">
+            <button
+                type="button"
+                class="btn btn__flat btn--wide"
+                hx-trigger="click"
+                hx-get="/items/{{item.id}}"
+                hx-target="main"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+            >
+                <svg fill="none" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                    <path xmlns="http://www.w3.org/2000/svg" d="M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5ZM19 5H5V19H19V5ZM12 7C12.5523 7 13 7.44772 13 8V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V8C11 7.44772 11.4477 7 12 7ZM16 9C16.5523 9 17 9.44772 17 10V16C17 16.5523 16.5523 17 16 17C15.4477 17 15 16.5523 15 16V10C15 9.44772 15.4477 9 16 9ZM8 11C8.55228 11 9 11.4477 9 12V16C9 16.5523 8.55228 17 8 17C7.44772 17 7 16.5523 7 16V12C7 11.4477 7.44772 11 8 11Z" fill="#0D0D0D"></path>
+                </svg>
+                See history
+            </button>
+            <button
+                type="button"
+                class="btn btn__flat btn--wide"
+                hx-trigger="click"
+                hx-get="/items/{{item.id}}/edit"
+                hx-target="main"
+                hx-swap="beforeend"
+                hx-push-url="true"
             >
             <svg fill="none" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                <path xmlns="http://www.w3.org/2000/svg" d="M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5ZM19 5H5V19H19V5ZM12 7C12.5523 7 13 7.44772 13 8V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V8C11 7.44772 11.4477 7 12 7ZM16 9C16.5523 9 17 9.44772 17 10V16C17 16.5523 16.5523 17 16 17C15.4477 17 15 16.5523 15 16V10C15 9.44772 15.4477 9 16 9ZM8 11C8.55228 11 9 11.4477 9 12V16C9 16.5523 8.55228 17 8 17C7.44772 17 7 16.5523 7 16V12C7 11.4477 7.44772 11 8 11Z" fill="#0D0D0D"></path>
-                </svg>See history</button>
+                <path xmlns="http://www.w3.org/2000/svg" d="M16.2929 2.29289C16.6834 1.90237 17.3166 1.90237 17.7071 2.29289L21.7071 6.29289C22.0976 6.68342 22.0976 7.31658 21.7071 7.70711L8.70711 20.7071C8.51957 20.8946 8.26522 21 8 21H4C3.44772 21 3 20.5523 3 20V16C3 15.7348 3.10536 15.4804 3.29289 15.2929L13.2927 5.2931L16.2929 2.29289ZM14 7.41421L5 16.4142V19H7.58579L16.5858 10L14 7.41421ZM18 8.58579L19.5858 7L17 4.41421L15.4142 6L18 8.58579Z" fill="#0D0D0D"></path>
+                </svg>
+                Edit
+            </button>
         </div>
     </div>
     {% endfor %}

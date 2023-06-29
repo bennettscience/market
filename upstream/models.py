@@ -23,8 +23,9 @@ def load_user(id):
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False, unique=True)
-
+    name = db.Column(db.String(64), nullable=False, unique=True)
+    abbreviation = db.Column(db.String(32), nullable=True, unique=True)
+    
     sales = db.relationship("Transaction", backref="item", lazy="dynamic")
     events = db.relationship("EventItem", backref="item", lazy="dynamic")
 

@@ -9,7 +9,7 @@ def create_app(config):
     app.config.from_object(config)
 
     db.init_app(app)
-    migrate.init_app(app, db, render_as_batch=True)
+    migrate.init_app(app, db)
     htmx.init_app(app)
     login_manager.init_app(app)
     marshmallow.init_app(app)

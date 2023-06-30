@@ -8,13 +8,15 @@ from webargs.flaskparser import parser
 
 from upstream.charts import ChartService
 from upstream.extensions import db, htmx
-from upstream.models import Event, Item
+from upstream.models import Event, Item, ItemType
 from upstream.schemas import ItemSchema
-
+from upstream.utils import object_to_select
+from upstream.wrappers import templated
 
 bp = Blueprint("items", __name__)
 
-@bp.get("/items")
+@bp.route("/items", methods=["GET"])
+@templated(template='items/index.html')
 @login_required
 def get_items() -> List[Item]:
     template = 'items/index.html'
@@ -24,21 +26,28 @@ def get_items() -> List[Item]:
         "items": ItemSchema(many=True).dump(items)
     }
 
-    if request.htmx:
-        resp = render_template(template, items=items)
-    else:
-        resp = render_template('shared/layout-wrap.html', partial=template, data=resp_data)
+    # if request.htmx:
+    #     resp = render_template(template, items=items)
+    # else:
+    #     resp = render_template('shared/layout-wrap.html', partial=template, data=resp_data)
 
-    return resp
+    return resp_data
 
 @bp.get("/items/create")
 @login_required
 def create_item_form():
+    types = object_to_select(ItemType.query.all())
+
+    content = {
+        "options": types
+    }
+
     return make_response(
         render_template(
             "shared/partials/sidebar.html",
             partial="forms/create-item.html",
             push_url="/items/create",
+            data=content
         )
     )
 
@@ -82,6 +91,32 @@ def get_single_item(id: int) -> Item:
         resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
 
     return resp
+
+@bp.get("/items/<int:id>/edit")
+@login_required
+def get_item_form(id: int) -> Item:
+    item = Item.query.filter(Item.id == id).first_or_404()
+    template = "forms/edit-item.html"
+
+    types = object_to_select(ItemType.query.all())
+
+    resp_data = {
+        "item": item,
+        "options": types
+    }
+
+    return render_template("shared/partials/sidebar.html", partial=template, data=resp_data)
+
+
+@bp.put("/items/<int:id>")
+@login_required
+def edit_item(id: int) -> Item:
+    args = parser.parse({
+        "name": fields.Str(),
+         "abbreviation": fields.Str()
+    })
+    print(args)
+    pass   
 
 
 @bp.delete("/events/<int:id>")

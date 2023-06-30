@@ -6,10 +6,16 @@
     _="on htmx:afterRequest reset() me"
 >
     <label>Item name
-    <input type="text" name="name" value="{{name}}"/>
+    <input type="text" name="name" value="{{data['item']['name']}}"/>
 		</label>
+    <label>Type
+    <select name="itemtype_id">
+        {% for option in data['options'] %}
+        <option {% if selected %} {% if selected == option.value %} selected {% endif %} {% endif %} value = {{option.value}}>{{option.text}}</option>
+        {% endfor %}
+    </select>
 		<label>Abbreviation
-    <input type="text" name="abbreviation" value="{{abbreviation}}" />
+    <input type="text" name="abbreviation" value="{{data['item']['abbreviation']}}" />
 		</label>
     <button class="btn btn--primary" type="submit">Submit</button>
 </form>

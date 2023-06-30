@@ -8,5 +8,12 @@
     <label>Item name
     <input type="text" name="name"/>
     </label>
+    <label>Type
+    <select name="itemtype_id">
+        {% for option in data['options'] %}
+        <option {% if selected %} {% if selected == option.value %} selected {% endif %} {% endif %} value = {{option.value}}>{{option.text}}</option>
+        {% endfor %}
+    </select>
+    </label>
     <button class="btn btn--primary" type="submit">Submit</button>
 </form>

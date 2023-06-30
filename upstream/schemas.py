@@ -20,6 +20,7 @@ class EventSchema(Schema):
 class ItemSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.String()
+    itemtype_id = fields.Int()
 
 
 class MarketSchema(Schema):

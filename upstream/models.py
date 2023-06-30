@@ -24,14 +24,20 @@ def load_user(id):
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
-    abbreviation = db.Column(db.String(32), nullable=True, unique=True)
-    
+    abbreviation = db.Column(db.String(32), nullable=True)
+    itemtype_id = db.Column(db.Integer, db.ForeignKey("item_type.id"))
+
     sales = db.relationship("Transaction", backref="item", lazy="dynamic")
     events = db.relationship("EventItem", backref="item", lazy="dynamic")
 
     def gross_sales(self):
         return sum([(sale.price_per_item * sale.quantity) for sale in self.sales])
 
+
+class ItemType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+    
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -7,3 +7,4 @@ config.py
 gunicorn.config.py
 
 log/
+.DS_Store

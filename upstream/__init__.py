@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, request, send_from_directory
 
 from upstream.extensions import db, htmx, login_manager, marshmallow, migrate, partials
 from upstream.blueprints import event, home, item, transaction, user
@@ -9,7 +9,7 @@ def create_app(config):
     app.config.from_object(config)
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     htmx.init_app(app)
     login_manager.init_app(app)
     marshmallow.init_app(app)

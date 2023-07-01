@@ -1,31 +1,42 @@
-<section class="page__header">
-    <section class="page__meta">
-        <h1>Sales</h1>
-        <i>All sales for Upstream Markets, sorted by date.</i>
+<section class="container--grid sales__header">
+  <section class="sales__header--meta">
+    <section>
+    <h1>Sales</h1>
+    <i>All sales for Upstream Markets, sorted by date.</i>
     </section>
+  </section>
+  <section class="sales__header--types">
     <section class="sales">
-        <div class="number-box--big"><p class="large">{{ "${:,.2f}".format(gross) }}</p><p>Total sales</p></div>
+      <div class="number-box--big">
+        <p class="large">{{ "${:,.2f}".format(gross) }}</p>
+        <p>Total sales</p>
+      </div>
     </section>
+  {% for type in types %}
+  <div class="number-box--big">
+    <p class="large">{{ "${:,.2f}".format(type.gross)}}</h>
+    <p>{{ type['name'] }}</p>
+    </div>
+  {% endfor %}
 </section>
 {% include 'shared/partials/search.html' %}
 <div class="table">
-    <div class="row header">
-        <div class="cell">Date</div>
-        <div class="cell">Event</div>
-        <div class="cell">Item</div>
-        <div class="cell">Quantity</div>
-        <div class="cell">Unit Price</div>
-        <div class="cell">Total</div>
-    </div>
-    {% for sale in sales %}
-    <div class="row">
-        <div class="cell" data-title="Date">{{ sale.occurred_at }}</div>
-        <div class="cell" data-title="Event">{{ sale.event.market.name }}</div>
-        <div class="cell" data-title="Item">{{ sale.item.name }}</div>
-        <div class="cell" data-title="Quantity">{{ sale.quantity }}</div>
-        <div class="cell" data-title="Unit Price">{{ "${:,.2f}".format(sale.price_per_item) }}</div>
-        <div class="cell" data-title="Gross Sale">{{ "${:,.2f}".format(sale.price_per_item * sale.quantity) }}</div>
-    </div>
-    {% endfor %}
+  <div class="row header">
+    <div class="cell">Date</div>
+    <div class="cell">Event</div>
+    <div class="cell">Item</div>
+    <div class="cell">Quantity</div>
+    <div class="cell">Unit Price</div>
+    <div class="cell">Total</div>
+  </div>
+  {% for sale in sales %}
+  <div class="row">
+    <div class="cell" data-title="Date">{{ sale.occurred_at }}</div>
+    <div class="cell" data-title="Event">{{ sale.event.market.name }}</div>
+    <div class="cell" data-title="Item">{{ sale.item.name }}</div>
+    <div class="cell" data-title="Quantity">{{ sale.quantity }}</div>
+    <div class="cell" data-title="Unit Price">{{ "${:,.2f}".format(sale.price_per_item) }}</div>
+    <div class="cell" data-title="Gross Sale">{{ "${:,.2f}".format(sale.price_per_item * sale.quantity) }}</div>
+  </div>
+  {% endfor %}
 </div>
-

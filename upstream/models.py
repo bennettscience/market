@@ -27,6 +27,7 @@ class Item(db.Model):
     abbreviation = db.Column(db.String(32), nullable=True)
     itemtype_id = db.Column(db.Integer, db.ForeignKey("item_type.id"))
 
+    type = db.relationship("ItemType")
     sales = db.relationship("Transaction", backref="item", lazy="dynamic")
     events = db.relationship("EventItem", backref="item", lazy="dynamic")
 
@@ -41,7 +42,6 @@ class Item(db.Model):
 class ItemType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
-    
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -137,5 +137,13 @@ class Transaction(db.Model):
     @classmethod
     def gross_sales(self):
         sales = self.query.all()
+        totals = [(sale.quantity * sale.price_per_item) for sale in sales]
+        return sum(totals)
+
+    @classmethod
+    def gross_by_type(self, type):
+        sales = db.session.query(
+            self
+        ).join(Item).join(ItemType).filter(ItemType.name == type).all()
         totals = [(sale.quantity * sale.price_per_item) for sale in sales]
         return sum(totals)

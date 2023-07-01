@@ -8,7 +8,7 @@ from webargs.flaskparser import parser
 
 from upstream.charts import EventChartBuilder, ChartService
 from upstream.extensions import db, htmx
-from upstream.models import Event, Item, Transaction
+from upstream.models import Event, Item, ItemType, Transaction
 from upstream.schemas import EventSchema, TransactionSchema
 
 
@@ -22,10 +22,19 @@ def get_all_sales():
 
     sales = Transaction.query.order_by(Transaction.occurred_at).all()
     gross = Transaction().gross_sales()
+    type_sales = []
+    
+    for type in ItemType.query.all():
+        total = Transaction().gross_by_type(type.name)
+        type_sales.append({
+            "name": type.name,
+            "gross": total
+        })
 
     resp_data = {
         "sales": sales,
-        "gross": gross
+        "gross": gross,
+        "types": type_sales
     }
 
     if request.htmx:

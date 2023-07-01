@@ -1,6 +1,6 @@
 <form
     hx-trigger="submit"
-    hx-post="/items/{{id}}/edit"
+    hx-put="/items/{{data['item']['id']}}"
     hx-swap="innerHTML"
     hx-target="main"
     _="on htmx:afterRequest reset() me"
@@ -11,10 +11,10 @@
     <label>Type
     <select name="itemtype_id">
         {% for option in data['options'] %}
-        <option {% if selected %} {% if selected == option.value %} selected {% endif %} {% endif %} value = {{option.value}}>{{option.text}}</option>
+        <option {% if data['selected'] %} {% if data['selected'] == option.value %} selected {% endif %} {% endif %} value = {{option.value}}>{{option.text}}</option>
         {% endfor %}
     </select>
-		<label>Abbreviation
+		<label>Short name
     <input type="text" name="abbreviation" value="{{data['item']['abbreviation']}}" />
 		</label>
     <button class="btn btn--primary" type="submit">Submit</button>

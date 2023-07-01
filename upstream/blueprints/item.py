@@ -102,7 +102,8 @@ def get_item_form(id: int) -> Item:
 
     resp_data = {
         "item": item,
-        "options": types
+        "options": types,
+        "selected": item.itemtype_id
     }
 
     return render_template("shared/partials/sidebar.html", partial=template, data=resp_data)
@@ -113,10 +114,21 @@ def get_item_form(id: int) -> Item:
 def edit_item(id: int) -> Item:
     args = parser.parse({
         "name": fields.Str(),
-         "abbreviation": fields.Str()
-    })
-    print(args)
-    pass   
+        "itemtype_id": fields.Int(),
+        "abbreviation": fields.Str()
+    }, location="form")
+
+    item = Item.query.filter(Item.id == id).first_or_404()
+
+    item.update(args)
+
+    # Update the item list
+    items = Item.query.order_by(Item.name).all()
+
+    return make_response(
+        render_template("items/index.html", items=ItemSchema(many=True).dump(items)),
+        trigger={"showToast": "Updated item sucecssfully.", "clearInput": "true"},
+    )
 
 
 @bp.delete("/events/<int:id>")

@@ -33,6 +33,10 @@ class Item(db.Model):
     def gross_sales(self):
         return sum([(sale.price_per_item * sale.quantity) for sale in self.sales])
 
+    def update(self, data):
+        for key, value in data.items():
+            setattr(self, key, value)
+        db.session.commit()
 
 class ItemType(db.Model):
     id = db.Column(db.Integer, primary_key=True)

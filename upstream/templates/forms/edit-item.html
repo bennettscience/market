@@ -10,6 +10,7 @@
 		</label>
     <label>Type
     <select name="itemtype_id">
+        <option value="" disabled selected>Set a category</option>
         {% for option in data['options'] %}
         <option {% if data['selected'] %} {% if data['selected'] == option.value %} selected {% endif %} {% endif %} value = {{option.value}}>{{option.text}}</option>
         {% endfor %}

@@ -2,7 +2,7 @@
     /* Colors */
     --site-gray: #e5e7ea;
     --accent-blue: #3c637a;
-    --accent-red: #e9164f;
+    --accent-red: #e1446e;
     --accent-green: #32c192;
     --site-dark: #153726;
     --text-white: #f0ecec;
@@ -188,7 +188,13 @@ label {
 }
 
 .btn--warn {
+    color: var(--text-white);
     background-color: var(--accent-red);
+}
+
+.btn--warn:hover {
+    color: var(--site-dark);
+    background-color: var(--site-gray);
 }
 
 .btn--warn__small {

@@ -35,6 +35,14 @@
                 </svg>
                 Edit
             </button>
+            <button
+                type="button"
+                class="btn btn__flat btn--wide btn--warn"
+                hx-trigger="click"
+                hx-get="/items/{{item.id}}/delete"
+                hx-target="main"
+                hx-swap="beforeend"
+            >× Delete</button>
         </div>
     </div>
     {% endfor %}

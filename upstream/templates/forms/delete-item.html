@@ -1,0 +1,19 @@
+<h2>Be careful!</h2>
+<p>You are about to delete an item permanently! This will remove the item and any records attached to it including market inventory and any sales made.</p>
+<p><strong>Are you sure you want to continue?</strong></p>
+<section class="btn-container--flex">
+	<button
+		hx-target="main"
+		hx-swap="innerHTML"
+		class="btn btn--wide btn--warn"
+		hx-delete="/items/{{ data['id'] }}"
+	>
+		Yes, delete
+	</button>
+	<button
+		class="btn btn--wide btn--secondary"
+		_="on click trigger closeSidebar then call showToast('Probably a good idea.', 4000)"
+	>
+		Nevermind
+	</button>
+</div>	

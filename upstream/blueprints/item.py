@@ -131,11 +131,27 @@ def edit_item(id: int) -> Item:
     )
 
 
-@bp.delete("/events/<int:id>")
+@bp.get("/items/<int:id>/delete")
+@login_required
+def get_delete_confirm(id: int):
+    item = Item.query.filter(Item.id == id).first_or_404()
+
+    return render_template(
+        "shared/partials/sidebar.html",
+        partial="forms/delete-item.html",
+        data=item
+    )
+
+@bp.delete("/items/<int:id>")
 @login_required
 def delete_single_item(id: int) -> List[Item]:
     item = Item.query.filter(Item.id == id).first_or_404()
     db.session.delete(item)
     db.session.commit()
 
-    return jsonfiy(ItemSchema(many=True).dump(Item.query.all()))
+    items = Item.query.order_by(Item.name).all()
+
+    return make_response(
+        render_template("items/index.html", items=ItemSchema(many=True).dump(items)),
+        trigger={"showToast": "Item and all records deleted."}
+    )

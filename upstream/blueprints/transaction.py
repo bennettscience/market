@@ -68,6 +68,7 @@ def make_sale(event_id):
         event_item_id=args["event_item_id"],
         price_per_item=args["price_per_item"],
         quantity=args["quantity"],
+        occurred_at=event.starts
     )
     db.session.add(sale)
     db.session.commit()

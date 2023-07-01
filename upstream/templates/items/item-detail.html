@@ -1,7 +1,5 @@
-<h1>{{item.name}}</h1>
-
 <section class="page__header">
-    <div class="chart" id="item-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>
+    <h1>{{item.name}}</h1>
     <section class="item__sales">
         <div class="number-box--big">
             <p class="large">{{ "${:,.2f}".format(item.gross_sales()) }}</p><p>Total sales</p>
@@ -14,7 +12,7 @@
     <div class="table">
         <div class="row header">
             <div class="cell">Sale Date</div>
-            <div class="cell">Quantity</div>
+            <div class="cell">Quantity Sold</div>
             <div class="cell">Unit Price</div>
             <div class="cell">Gross</div>
         </div>
@@ -29,16 +27,4 @@
     </div>
 </div>
 
-<h2>Events</h2>
-<div class="table">
-    <div class="row header red">
-        <div class="cell">Event Date</div>
-        <div class="cell">Event Name</div>
-    </div>
-    {% for record in item.events %}
-    <div class="row">
-        <div class="cell" data-title="Event Date">{{ record.event.starts }}</div>
-        <div class="cell" data-title="Event Name">{{ record.event.market.name }}</div>
-    </div>
-    {% endfor %}
-</div>
+<div class="chart" id="item-chart">{%autoescape false%}{{chart}}{% endautoescape %}</div>

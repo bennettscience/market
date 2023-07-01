@@ -14,6 +14,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.backends.backend_svg import FigureCanvasSVG
 import matplotlib.dates as mdates
 from matplotlib.figure import Figure
+import matplotlib.ticker as ticker
 
 from upstream.extensions import db
 
@@ -21,7 +22,7 @@ from upstream.extensions import db
 class EventChartBuilder:
     def __init__(self, event):
         self.event = event
-
+        # breakpoint()
     def build(self):
         # Build the chart
         data = {
@@ -50,7 +51,7 @@ class ItemChartBuilder:
         from upstream.models import Event, Market, Transaction
         markets = Market.query.all()
         colors = ['#000', '#b73351', '#7abbff' ]
-        fig = Figure()
+        fig = Figure(figsize=(7.0, 5.0))
         ax = fig.subplots(1, 1)
 
         df = pd.read_sql(
@@ -65,9 +66,13 @@ class ItemChartBuilder:
 
         sales = df.groupby(['market_id', df['starts'].dt.date]).agg({'quantity': 'sum'})
 
+        labels = [market.date for market in df['starts']]
+        
         for market in markets:
             if sales['quantity'].get(market.id) is not None:
-                ax.plot(sales['quantity'].get(market.id), marker='o', color=colors[market.id], label=market.name)
+                ax.plot(sales['quantity'].get(market.id), marker='o', label=market.name)
+                ax.fill_between(sales['quantity'],sales['quantity'], 0, facecolor=colors[market.id], color=colors[market.id], alpha=0.2)
+                ax.set_xticklabels(market.name, rotation=40, ha="right")
 
         ax.legend()
         ax.grid(True)
@@ -75,12 +80,12 @@ class ItemChartBuilder:
         ax.set_xlabel("Date")
         ax.set_xlim([df['starts'].dt.date.min(), df['starts'].dt.date.max()])
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%y"))
-        # plt.setp(ax.get_xticklabels(), rotation=45)
-        plt.rc('font', size=10)
+        ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+        plt.rc('font', size=9)
 
         for spine in ax.spines.values():
             spine.set_edgecolor((0, 0, 0, 0.1))
-
+        fig.tight_layout()
         return fig
     
     def build(self):
@@ -95,9 +100,9 @@ class ChartService:
     def __init__(self, data):
         # Accept a series as list of tuples with the (x, y) defined
         self.data = data
-
+        
     def __create_pie_figure(self):
-        fig = Figure(figsize=(4.0, 3.0))
+        fig = Figure(figsize=(7.0, 5.0))
         labels = self.data["labels"]
         sizes = self.data["series"]
 
@@ -126,7 +131,7 @@ class ChartService:
         ax.set_ylabel("Total")
         ax.set_xlabel("Items")
         ax.legend()
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=40, ha="right")
         plt.tick_params(axis="x", labelsize=10)
         plt.tight_layout()
 

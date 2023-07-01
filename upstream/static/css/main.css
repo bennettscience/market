@@ -511,7 +511,7 @@ main {
 }
 
 .number-box--big {
-    padding: 0 3rem;
+    padding: 0 3rem 0 1.5rem;
     border: 1px solid var(--site-gray);
     border-radius: 3px;
     background-color: #fdfdfd;
@@ -530,6 +530,7 @@ main {
 }
 
 .chart {
+    margin-top: 1rem;
     max-width: 100%;
 }
 

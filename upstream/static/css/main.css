@@ -444,7 +444,7 @@ section.container--grid {
     width: 100%; 
 }
 
-.sales__header--types {
+.event__header--types, .sales__header--types {
     display: flex;
     grid-area: types;
     flex-direction: row;
@@ -593,6 +593,7 @@ section.container--grid {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1.2rem;
 }
 
 .event__actions {
@@ -607,7 +608,6 @@ section.container--grid {
     align-items: center;
     gap: 1.2rem;
     background-color: transparent;
-    margin-bottom: 1.2rem;
 }
 
 .event__items {

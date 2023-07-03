@@ -9,8 +9,9 @@ from webargs.flaskparser import parser
 
 from upstream.charts import EventChartBuilder, ChartService
 from upstream.extensions import db, htmx
-from upstream.models import Event, EventItem, Item, Market
+from upstream.models import Event, EventItem, Item, ItemType, Market, Transaction
 from upstream.schemas import EventSchema, MarketSchema
+from upstream.wrappers import templated
 
 bp = Blueprint("events", __name__)
 
@@ -35,6 +36,7 @@ def get_event_form():
         )
     )
 
+
 @bp.post("/events")
 @login_required
 def post_event() -> List[Event]:
@@ -58,10 +60,16 @@ def post_event() -> List[Event]:
 
 @bp.get("/events/<int:id>")
 @login_required
+@templated(template="events/index.html")
 def get_single_event(id: int) -> Event:
 
     event = Event.query.filter(Event.id == id).first_or_404()
     sales = event.gross_sales()
+    type_sales = []
+
+    for type in ItemType.query.all():
+        total = Transaction().gross_by_type(type.name)
+        type_sales.append({"name": type.name, "gross": total})
 
     if event.inventory.all():
         data_builder = EventChartBuilder(event)
@@ -71,21 +79,20 @@ def get_single_event(id: int) -> Event:
         chart = service.stacked_bar()
     else:
         chart = "No data to display."
-    
+
     resp_data = {
-        "event": event,
-        "sales": sales,
-        "chart": chart
+        "event": event, 
+        "sales": sales, 
+        "chart": chart,
+        "types": type_sales
     }
 
-    template = "events/index.html"
+    # if request.htmx:
+    #     resp = render_template(template, **resp_data)
+    # else:
+    #     resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
 
-    if request.htmx:
-        resp = render_template(template, **resp_data)
-    else:
-        resp = render_template("shared/layout-wrap.html", partial=template, data=resp_data)
-
-    return resp
+    return resp_data
 
 
 @bp.put("/events/<int:id>")
@@ -126,6 +133,7 @@ def get_inventory_form(event_id):
         "shared/partials/sidebar.html", partial="forms/create-inventory.html", data=data
     )
 
+
 @bp.get("/events/<int:event_id>/update")
 @login_required
 def get_notes_form(event_id):
@@ -134,20 +142,23 @@ def get_notes_form(event_id):
     data = {"event": event}
 
     return render_template(
-        'shared/partials/sidebar.html', 
-        partial='forms/create-event-note.html', data=data
+        "shared/partials/sidebar.html",
+        partial="forms/create-event-note.html",
+        data=data,
     )
 
 
 @bp.put("/events/<int:event_id>/update")
 @login_required
 def update_event_note(event_id):
-    args = parser.parse({ "note": fields.Str() }, location="form")
+    args = parser.parse({"note": fields.Str()}, location="form")
     event = Event.query.filter(Event.id == event_id).first_or_404()
 
     event.update(args)
 
-    return make_response("", trigger={"showToast": "Successfully saved the note!", "success": "true"})
+    return make_response(
+        "", trigger={"showToast": "Successfully saved the note!", "success": "true"}
+    )
 
 
 # Event Inventory controls
@@ -174,8 +185,13 @@ def post_event_inventory(id: int) -> Event:
     chart = service.stacked_bar()
 
     return make_response(
-        render_template('events/partials/event-table.html', event=event, sales=sales, chart=chart),
-        trigger={"showToast": f"Added {event_item.item.name.lower()}s to the market.", "success": "true"}
+        render_template(
+            "events/partials/event-table.html", event=event, sales=sales, chart=chart
+        ),
+        trigger={
+            "showToast": f"Added {event_item.item.name.lower()}s to the market.",
+            "success": "true",
+        },
     )
 
 

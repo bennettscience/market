@@ -141,9 +141,15 @@ class Transaction(db.Model):
         return sum(totals)
 
     @classmethod
-    def gross_by_type(self, type):
+    def gross_by_type(self, type, event=None):
         sales = db.session.query(
             self
         ).join(Item).join(ItemType).filter(ItemType.name == type).all()
-        totals = [(sale.quantity * sale.price_per_item) for sale in sales]
+        if event:
+            totals = [
+                (sale.quantity * sale.price_per_item) for sale in sales if sale.event.id == event.id
+            ]
+        else:
+            totals = [(sale.quantity * sale.price_per_item) for sale in sales]
+
         return sum(totals)

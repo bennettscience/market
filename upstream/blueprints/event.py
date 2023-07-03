@@ -68,7 +68,7 @@ def get_single_event(id: int) -> Event:
     type_sales = []
 
     for type in ItemType.query.all():
-        total = Transaction().gross_by_type(type.name)
+        total = Transaction().gross_by_type(type.name, event=event)
         type_sales.append({"name": type.name, "gross": total})
 
     if event.inventory.all():

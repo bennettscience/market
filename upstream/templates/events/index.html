@@ -30,12 +30,10 @@
     </section>
   </section>
   <section class="event__header--types">
-    <section class="sales">
-      <div class="number-box--big">
-        <p class="large">{{ "${:,.2f}".format(sales) }}</p>
-        <p>Total sales</p>
-      </div>
-    </section>
+    <div class="number-box--big">
+      <p class="large">{{ "${:,.2f}".format(sales) }}</p>
+      <p>Total sales</p>
+    </div>
     {% for type in types %}
     <div class="number-box--big">
       <p class="large">{{ "${:,.2f}".format(type.gross)}}</h>

@@ -419,6 +419,8 @@ section.container--grid {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .cell.flex-cell:hover {
